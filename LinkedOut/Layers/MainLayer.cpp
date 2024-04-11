@@ -82,19 +82,27 @@ namespace LinkedOut {
 
 	Ui_LinkedOutClass* cl;
 
-	void MainLayer::SwitchToLogin() {
+	void MainLayer::SwitchToLogin(bool cleanAll) {
 		SetCurrentLayer(m_LoginLayer);
 		m_LastCaptchaNumber = Random::GenerateUInt32(1000, 10000);
 		m_LoginLayer->m_CaptchaLabel->setText(QString("Captcha %1").arg(m_LastCaptchaNumber));
+		if (cleanAll)
+			m_LoginLayer->CleanAllInputs();
+		else
+			m_LoginLayer->CleanupInputs();
 	}
 
-	void MainLayer::SwitchToSignup() {
+	void MainLayer::SwitchToSignup(bool cleanAll) {
 
 		SetCurrentLayer(m_SignupLayer);
 
 		m_LastCaptchaNumber= Random::GenerateUInt32(1000, 10000);
 
 		m_SignupLayer->m_CaptchaLabel->setText(QString("Captcha %1").arg(m_LastCaptchaNumber));
+		if (cleanAll)
+			m_SignupLayer->CleanAllInputs();
+		else
+			m_SignupLayer->CleanupInputs();
 	}
 
 	void MainLayer::OnAttach() {
@@ -114,6 +122,7 @@ namespace LinkedOut {
 		m_LoginLayer = new LoginLayer(this);
 		m_MessageLayer = new MessageLayer(this);
 
+		m_MessageLayer->WarnInfinite("Hello");
 
 		m_SplashLayer->Hide();
 		m_SignupLayer->Hide();

@@ -2,6 +2,7 @@
 #include "MainLayer.h"
 
 #include "Core/Window.h"
+#include "CommonErrors.h"
 
 #include <QMainWindow>
 #include <qpushbutton.h>
@@ -106,6 +107,7 @@ namespace LinkedOut {
 
 		delete m_CentralWidget;
 	}
+
 
 
 	void SignupLayer::Show() {
@@ -308,6 +310,9 @@ namespace LinkedOut {
 				"\n"
 				"QPushButton:hover{\n"
 				"	background-color: rgb(100,180,160);\n"
+				"}\n"
+				"QPushButton:disabled{\n"
+				"background-color: rgb(120, 216, 192);"
 				"}"));
 			m_Button->setFlat(true);
 			m_Button->setText(QApplication::translate("LinkedOutClass", "Sign up", nullptr));
@@ -317,10 +322,7 @@ namespace LinkedOut {
 	}
 
 	UserData SignupLayer::GetUserDataFromSignupForm() {
-		if (m_MainLayer->m_LastCaptchaNumber != m_CaptchaTextInput->text().toUInt()) {
-			m_MainLayer->m_MessageLayer->Error("Incorrect captcha!");
-			return {};
-		}
+		
 		std::string username = m_UsernameTextInput->text().toStdString();
 		std::string password = m_PasswordTextInput->text().toStdString();
 
@@ -331,8 +333,47 @@ namespace LinkedOut {
 		return ret;
 	}
 
+
+	void SignupLayer::CleanupInputs()
+	{
+		m_PasswordTextInput->setText("");
+		m_CaptchaTextInput->setText("");
+		m_Button->setEnabled(false);
+	}
+
+	void SignupLayer::CleanAllInputs()
+	{
+		CleanupInputs();
+		m_UsernameTextInput->setText("");
+	}
+
+	void SignupLayer::OnInputChanged(const QString&) {
+		m_Button->setEnabled(UsernameHasInput() && PasswordHasInput() && CaptchaHasInput());
+	}
+
+	bool SignupLayer::UsernameHasInput()
+	{
+		return !m_UsernameTextInput->text().isEmpty();
+	}
+
+	bool SignupLayer::PasswordHasInput()
+	{
+		return !m_PasswordTextInput->text().isEmpty();
+	}
+
+	bool SignupLayer::CaptchaHasInput()
+	{
+		return !m_CaptchaTextInput->text().isEmpty();
+	}
+
 	void SignupLayer::SetupSignupEvents() {
 		QObject::connect(m_Button, &QPushButton::clicked, [this]() {
+			if (m_MainLayer->m_LastCaptchaNumber != m_CaptchaTextInput->text().toUInt()) {
+				m_MainLayer->m_MessageLayer->Error(INCORRECT_CAPTCHA);
+				CleanupInputs();
+				return;
+			}
+
 			auto userData = GetUserDataFromSignupForm();
 			if (userData.IsValid()) {
 
@@ -342,17 +383,23 @@ namespace LinkedOut {
 				switch (ec)
 				{
 				case LinkedOut::SignupErrorCodes::UserExists:
-					m_MainLayer->m_MessageLayer->Error("User With username {} already exists", userData.Username);
+					m_MainLayer->m_MessageLayer->Error(USERNAME_EXISTS);
 				}
 			}
 			else {
-				m_MainLayer->m_MessageLayer->Error("Username or password is invalid!");
+				m_MainLayer->m_MessageLayer->Error(INVALID_USERNAME_OR_PASSWORD);
 			}
-			m_MainLayer->SwitchToSignup();
+			m_MainLayer->SwitchToSignup(false);
 		});
 
+		QObject::connect(m_UsernameTextInput, &QLineEdit::textChanged, LO_BIND_FN(OnInputChanged));
+		QObject::connect(m_PasswordTextInput, &QLineEdit::textChanged, LO_BIND_FN(OnInputChanged));
+		QObject::connect(m_CaptchaTextInput, &QLineEdit::textChanged, LO_BIND_FN(OnInputChanged));
+
+
+
 		QObject::connect(m_ToLoginLabel, &ClickableLabel::clicked, [this]() {
-			m_MainLayer->SwitchToLogin();
+			m_MainLayer->SwitchToLogin(true);
 			});
 
 	}

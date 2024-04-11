@@ -1,5 +1,12 @@
 #include "LoginLayer.h"
+
+#include "MainLayer.h"
 #include "Core/Window.h"
+#include "CustomUI/ClickableLabel.h"
+#include "CommonErrors.h"
+
+
+
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
@@ -10,9 +17,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QWidget>
 #include <QIntValidator>
-#include "CustomUI/ClickableLabel.h"
 
-#include "MainLayer.h"
 
 namespace LinkedOut {
 
@@ -325,6 +330,9 @@ namespace LinkedOut {
                 "\n"
                 "QPushButton:hover{\n"
                 "	background-color: rgb(100,180,160);\n"
+                "}\n"
+                "QPushButton:disabled{\n"
+                "background-color: rgb(120, 216, 192);"
                 "}"));
             m_LoginButton->setFlat(true);
             m_LoginButton->setText(QApplication::translate("LinkedOutClass", "Login", nullptr));
@@ -334,31 +342,74 @@ namespace LinkedOut {
         SetupLoginEvents();
 
 	}
+
+
+    void LoginLayer::OnInputChanged(const QString&) {
+        m_LoginButton->setEnabled(UsernameHasInput() && PasswordHasInput() && CaptchaHasInput());
+    }
+
+    bool LoginLayer::UsernameHasInput()
+    {
+        return !m_UsernameTextInput->text().isEmpty();
+    }
+
+    bool LoginLayer::PasswordHasInput()
+    {
+        return !m_PasswordTextInput->text().isEmpty();
+    }
+
+    bool LoginLayer::CaptchaHasInput()
+    {
+        return !m_CaptchaTextInput->text().isEmpty();
+    }
+
 	void LoginLayer::SetupLoginEvents() {
         QObject::connect(m_ToSignupLabel, &ClickableLabel::clicked, [this]() {
-            m_MainLayer->SwitchToSignup();
+            m_MainLayer->SwitchToSignup(true);
             });
 
         QObject::connect(m_LoginButton, &QPushButton::clicked, [this]() {
+            if (m_MainLayer->m_LastCaptchaNumber != m_CaptchaTextInput->text().toUInt()) {
+                m_MainLayer->m_MessageLayer->Error(INCORRECT_CAPTCHA);
+                CleanupInputs();
+                return;
+            }
             auto userData = GetUserDataFromLoginForm();
             if (userData.IsValid()) {
-
-                int  ec = m_MainLayer->Login(userData,m_RememberMeCheckbox->checkState() == Qt::CheckState::Checked);
+                int  ec = m_MainLayer->Login(userData, m_RememberMeCheckbox->checkState() == Qt::CheckState::Checked);
                 if (ec == LoginErrorCodes_None)
                     return;
+                if ((ec & LoginErrorCodes_IncorrectPassword) || (ec & LoginErrorCodes_IncorrectUsername)) {
+                    m_MainLayer->m_MessageLayer->Error(INCORRECT_USERNAME_OR_PASSWORD);
+                }
             }
-            m_MainLayer->SwitchToLogin();
+            else {
+                m_MainLayer->m_MessageLayer->Error(INVALID_USERNAME_OR_PASSWORD);
+            }
+            m_MainLayer->SwitchToLogin(false);
             });
+
+
+        QObject::connect(m_UsernameTextInput, &QLineEdit::textChanged, LO_BIND_FN(OnInputChanged));
+        QObject::connect(m_PasswordTextInput, &QLineEdit::textChanged, LO_BIND_FN(OnInputChanged));
+        QObject::connect(m_CaptchaTextInput, &QLineEdit::textChanged, LO_BIND_FN(OnInputChanged));
+
 	}
 
+    void LoginLayer::CleanAllInputs() {
+        CleanupInputs();
+        m_UsernameTextInput->setText("");
+        m_RememberMeCheckbox->setChecked(false);
+    }
 
     void LoginLayer::CleanupInputs() {
+        m_CaptchaTextInput->setText("");
+        m_PasswordTextInput->setText("");
+        m_LoginButton->setEnabled(false);
     }
 
     UserData LoginLayer::GetUserDataFromLoginForm() {
-        if (m_MainLayer->m_LastCaptchaNumber != m_CaptchaTextInput->text().toUInt()) {
-            return {};
-        }
+       
         std::string username = m_UsernameTextInput->text().toStdString();
         std::string password = m_PasswordTextInput->text().toStdString();
 

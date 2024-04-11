@@ -39,8 +39,8 @@ namespace LinkedOut {
 
 		UserData GetUserDataStoredLocally();
 	private:
-		void SwitchToSignup();
-		void SwitchToLogin();
+		void SwitchToSignup(bool cleanAll);
+		void SwitchToLogin(bool cleanAll);
 	private:
 		SignupErrorCodes Signup(const UserData& userData);
 		LoginErrorCodes Login(const UserData& userData,bool storeLocally);

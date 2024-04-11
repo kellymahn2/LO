@@ -55,7 +55,7 @@ namespace LinkedOut {
 		m_MessagesVerticalLayout->setAlignment(Qt::AlignBottom | Qt::AlignRight);
 
 		m_MessageCloseIcon = new QIcon();
-		m_MessageCloseIcon->addFile(QString::fromUtf8(":/LinkedOut/Resources/MessageCloseButtonOnHover.png"), QSize(), QIcon::Normal, QIcon::Off);
+		m_MessageCloseIcon->addFile(QString::fromUtf8("Resources/MessageCloseButton.png"), QSize(), QIcon::Normal, QIcon::Off);
 
 		//Per message
 
@@ -123,7 +123,7 @@ namespace LinkedOut {
 
 		auto window = Window::GetMainWindow()->GetNativeHandle();
 		auto size = window->size();
-		m_MessagesFrame->setGeometry(size.width() - MessageBoxWidth, 0, MessageBoxWidth, size.height());
+		m_MessagesFrame->setGeometry(size.width() - MessageBoxWidth - 20, 0, MessageBoxWidth, size.height());
 		
 
 
@@ -134,7 +134,7 @@ namespace LinkedOut {
 			}
 		}
 
-		auto mbBottomLeftCornerY = size.height();
+		auto mbBottomLeftCornerY = size.height() - 10;
 
 		for (auto& [time,message]: m_Messages) {
 			if (mbBottomLeftCornerY < 0)
@@ -152,42 +152,91 @@ namespace LinkedOut {
 		UpdateTimers();
 		RemoveExpiredMessages();
 	}
-	void MessageLayer::ShowMessage(const std::string& message, MessageSeverity severity)
+	void MessageLayer::ShowMessage(const std::string& message, MessageSeverity severity,float aliveDuration)
 	{
+
+
+		struct vec3 {
+			float x = 0.0f;
+			float y = 0.0f;
+			float z = 0.0f;
+		};
+		struct vec4 {
+			float x = 0.0f;
+			float y = 0.0f;
+			float z = 0.0f;
+			float w = 0.0f;
+		};
+
+
+		struct colors {
+			vec3 BorderCol;
+			vec3 BackgroundCol;
+
+			colors(const vec3& borderCol, const vec3& backgroundCol)
+				:BorderCol(borderCol),BackgroundCol(backgroundCol)
+			{}
+
+		};
+
+		const int messageFrameBorderSize = 3;
+		const int messageFrameRounding = 20;
+
+
+		const vec3 defaultFrameCol = {110,110,110};
+
+
+
+		const colors infoCols({ 110,180,230 },defaultFrameCol);
+		const colors warnCols({ 230,190,40 },defaultFrameCol);
+		const colors errorCols({ 215,45,40 }, defaultFrameCol);
+
+
+
+		const char* messageFrameStyleF = "padding:5px;background-color:rgb({},{},{});border-style:solid;border-color:rgb({},{},{});border-width:{}px;border-radius:{};";
+		const char* messageLabelStyleF = "border-style:none;color:black;border-radius:{}px;";
+		const char* messageButtonStyleF = 
+			R"(
+QPushButton {{
+	border-style:none;color:white;
+	border-radius:{}px;
+}}
+QPushButton:hover{{
+	background-color:rgb(240,20,30);
+}}
+			)";
+
+
+
+
+
+
 		Message msg;
 		msg.MessageString = message;
 		msg.Severity = severity;
 		auto suppliedTime = std::chrono::steady_clock::now();
-		msg.MessageAliveDurationInMS = 0.0f; // Default duration for messages
-		msg.MessageDurationInMS = 5.0f;
+		msg.MessageAliveDurationInS = 0.0f; // Default duration for messages
+		msg.MessageDurationInS = aliveDuration;
 
 		msg.MessageFrame = new QFrame(m_MessagesFrame);
 		msg.MessageFrame->setObjectName(QString::fromUtf8("m_MessageFrame"));
 		msg.MessageFrame->setFixedWidth(MessageBoxWidth);
 		msg.MessageFrame->setFixedHeight(MessageBoxHeight);
-		msg.MessageFrame->setStyleSheet("boder:5px solid black;background-color:red;");
 
 		msg.MessageLabel = new QLabel(msg.MessageFrame);
 		msg.MessageLabel->setObjectName(QString::fromUtf8("m_MessageLabel"));
-		msg.MessageLabel->setGeometry(QRect(0, 0, MessageBoxWidth-30, MessageBoxHeight));
+
+		msg.MessageLabel->setGeometry(QRect(messageFrameBorderSize, messageFrameBorderSize, MessageBoxWidth-30- messageFrameBorderSize, MessageBoxHeight - messageFrameBorderSize * 2));
+
 		msg.MessageLabel->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignTop);
 		msg.MessageLabel->setWordWrap(true);
-		
 		msg.MessageLabel->setText(QApplication::translate("LinkedOutClass", message.c_str(), nullptr));
+		msg.MessageLabel->setStyleSheet(QString::fromStdString(fmt::format(messageLabelStyleF, messageFrameRounding)));
 
 		msg.MessagePushButton = new QPushButton("", msg.MessageFrame);
 		msg.MessagePushButton->setObjectName(QString::fromUtf8("m_MessagePushButton"));
-		msg.MessagePushButton->setGeometry(QRect(MessageBoxWidth-24, 0, 24, 24));
-		msg.MessagePushButton->setStyleSheet(QString::fromUtf8("\n"
-			"\n"
-			"QPushButton {\n"
-			"	border:none;\n"
-			"}\n"
-			"\n"
-			"\n"
-			"QPushButton:hover{\n"
-			"		background-color:rgb(240,20,30);\n"
-			"}"));
+		msg.MessagePushButton->setGeometry(QRect(MessageBoxWidth - 24 - messageFrameBorderSize - 2, messageFrameBorderSize  + 2, 24, 24));
+		msg.MessagePushButton->setStyleSheet(QString::fromStdString(fmt::format(messageButtonStyleF,messageFrameRounding/2)));
 
 		msg.MessagePushButton->setIcon(*m_MessageCloseIcon);
 		msg.MessagePushButton->setFlat(true);
@@ -195,23 +244,36 @@ namespace LinkedOut {
 
 
 		QObject::connect(msg.MessagePushButton, &QPushButton::clicked, [&,suppliedTime]() {
+			DestroyMessage(m_Messages[suppliedTime]);
 			m_Messages.erase(suppliedTime);
 			});
+
+		
+
+		vec3 borderCol{};
+		vec3 backgroundCol{};
+
+
 
 		// Customize appearance based on message severity
 		switch (severity) {
 		case MessageSeverity::Info:
-			// Set style or color for info messages
+			borderCol = infoCols.BorderCol;
+			backgroundCol = infoCols.BackgroundCol;
 			break;
 		case MessageSeverity::Warn:
-			// Set style or color for warning messages
+			borderCol = warnCols.BorderCol;
+			backgroundCol = warnCols.BackgroundCol;
 			break;
 		case MessageSeverity::Error:
-			// Set style or color for error messages
-			break;
-		default:
+			borderCol = errorCols.BorderCol;
+			backgroundCol = errorCols.BackgroundCol;
 			break;
 		}
+
+
+		msg.MessageFrame->setStyleSheet(QString::fromStdString(fmt::format(messageFrameStyleF,backgroundCol.x,backgroundCol.y,backgroundCol.z,borderCol.x,borderCol.y,borderCol.z,messageFrameBorderSize,messageFrameRounding)));
+
 
 		m_Messages[suppliedTime] = msg;
 	}
@@ -219,7 +281,7 @@ namespace LinkedOut {
 	{
 		std::vector<std::chrono::steady_clock::time_point> timesToRemove;
 		for (auto& [time,msg] : m_Messages) {
-			if (msg.MessageAliveDurationInMS > msg.MessageDurationInMS) {
+			if (msg.MessageAliveDurationInS > msg.MessageDurationInS) {
 				timesToRemove.push_back(time);
 			}
 		}
@@ -236,7 +298,7 @@ namespace LinkedOut {
 	{
 		auto ts = (float)std::chrono::duration_cast<std::chrono::nanoseconds>(m_Now - m_Last).count()*1e-9f;
 		for (auto& [time,msg] : m_Messages) {
-			msg.MessageAliveDurationInMS += ts;
+			msg.MessageAliveDurationInS += ts;
 		}
 		
 	}

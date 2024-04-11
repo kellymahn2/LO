@@ -2,6 +2,7 @@
 #include "Core/Layer.h"
 class QVBoxLayout;
 class ClickableLabel;
+class QString;
 namespace LinkedOut {
 	class MainLayer;
 	class SignupLayer : public Layer{
@@ -20,6 +21,15 @@ namespace LinkedOut {
 		void SetupSignupEvents();
 
 		void Cleanup();
+		void CleanupInputs();
+		void CleanAllInputs();
+
+
+		void OnInputChanged(const QString&);
+
+		bool UsernameHasInput();
+		bool PasswordHasInput();
+		bool CaptchaHasInput();
 
 		UserData SignupLayer::GetUserDataFromSignupForm();
 	private:

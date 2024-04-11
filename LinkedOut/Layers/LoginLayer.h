@@ -2,7 +2,7 @@
 #include "Core/Layer.h"
 
 class ClickableLabel;
-
+class QString;
 namespace LinkedOut{
 
     class MainLayer;
@@ -23,6 +23,14 @@ namespace LinkedOut{
         UserData GetUserDataFromLoginForm();
 
         void CleanupInputs();
+
+        void CleanAllInputs();
+
+        void OnInputChanged(const QString&);
+
+        bool UsernameHasInput();
+        bool PasswordHasInput();
+        bool CaptchaHasInput();
 
 	private:
         MainLayer* m_MainLayer;

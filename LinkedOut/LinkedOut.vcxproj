@@ -120,6 +120,7 @@
     <ClInclude Include="Core\Layer.h" />
     <ClInclude Include="Core\Random.h" />
     <ClInclude Include="Core\Window.h" />
+    <ClInclude Include="Layers\CommonErrors.h" />
     <ClInclude Include="Layers\SplashLayer.h" />
     <QtMoc Include="CustomUI\ClickableLabel.h" />
     <ClInclude Include="Layers\ErrorLayer.h" />

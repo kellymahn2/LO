@@ -20,16 +20,30 @@ namespace LinkedOut {
 
 		template<typename...Args>
 		void Info(const std::string& format, Args&&...args) {
-			ShowMessage(fmt::format(format, std::forward<Args>(args)...),MessageSeverity::Info);
+			ShowMessage(fmt::format(format, std::forward<Args>(args)...),MessageSeverity::Info,5.0f);
 		}
 
 		template<typename...Args>
 		void Warn(const std::string& format, Args&&...args) {
-			ShowMessage(fmt::format(format, std::forward<Args>(args)...), MessageSeverity::Warn);
+			ShowMessage(fmt::format(format, std::forward<Args>(args)...), MessageSeverity::Warn,5.0f);
 		}
 		template<typename...Args>
 		void Error(const std::string& format, Args&&...args) {
-			ShowMessage(fmt::format(format, std::forward<Args>(args)...), MessageSeverity::Error);
+			ShowMessage(fmt::format(format, std::forward<Args>(args)...), MessageSeverity::Error,5.0f);
+		}
+
+		template<typename...Args>
+		void InfoInfinite(const std::string& format, Args&&...args) {
+			ShowMessage(fmt::format(format, std::forward<Args>(args)...), MessageSeverity::Info,std::numeric_limits<float>::max());
+		}
+
+		template<typename...Args>
+		void WarnInfinite(const std::string& format, Args&&...args) {
+			ShowMessage(fmt::format(format, std::forward<Args>(args)...), MessageSeverity::Warn, std::numeric_limits<float>::max());
+		}
+		template<typename...Args>
+		void ErrorInfinite(const std::string& format, Args&&...args) {
+			ShowMessage(fmt::format(format, std::forward<Args>(args)...), MessageSeverity::Error, std::numeric_limits<float>::max());
 		}
 		
 
@@ -47,8 +61,8 @@ namespace LinkedOut {
 
 		struct Message {
 			MessageSeverity Severity;
-			float MessageDurationInMS;
-			float MessageAliveDurationInMS;
+			float MessageDurationInS;
+			float MessageAliveDurationInS;
 			std::string MessageString;
 			QFrame* MessageFrame;
 			QLabel* MessageLabel;
@@ -56,7 +70,7 @@ namespace LinkedOut {
 			bool IsVisible = false;
 		};
 
-		void ShowMessage(const std::string& message, MessageSeverity severity);
+		void ShowMessage(const std::string& message, MessageSeverity severity,float aliveDurationInMS);
 
 		void DestroyMessage(Message& message);
 

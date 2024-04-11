@@ -82,11 +82,13 @@ namespace LinkedOut {
 			m_Frame->setFrameShadow(QFrame::Raised);
 		}
 
+#define WELCOME_TEXT "    LinkedOut is a professional networking platform for\n    individuals and businesses.It's ideal for job seekers,\n    businesses seeking to expand, and professionals aiming\n    to grow their careers. With features like job searching,\n    networking, and professional development resources, LinkedIn offers valuable opportunities for connection and advancement in various industries."
+
 		//Welcome text
 		{
 			m_SplashWelcomeText = new QLabel(m_Frame);
 			m_SplashWelcomeText->setObjectName(QString::fromUtf8("SplashWeclomeText"));
-			m_SplashWelcomeText->setGeometry(QRect(120, 90, 271, 231));
+			m_SplashWelcomeText->setGeometry(QRect(120, 90, 500, 231));
 			sizePolicy.setHeightForWidth(m_SplashWelcomeText->sizePolicy().hasHeightForWidth());
 			m_SplashWelcomeText->setSizePolicy(sizePolicy);
 			m_SplashWelcomeText->setStyleSheet(QString::fromUtf8("font: 75 italic 16pt \"Candara\";"));
@@ -94,11 +96,11 @@ namespace LinkedOut {
 			m_SplashWelcomeText->setScaledContents(false);
 			m_SplashWelcomeText->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignTop);
 			m_SplashWelcomeText->setWordWrap(true);
-			m_SplashWelcomeText->setText(QApplication::translate("window", "Welcome to Linked Out!\n"
+			m_SplashWelcomeText->setText(QApplication::translate("window", "Welcome to LinkedOut!\n"
 				"\n"
 				"\n"
 				"\n"
-				"SampleText", nullptr));
+				WELCOME_TEXT, nullptr));
 		}
 
 		//Weclome image
@@ -107,11 +109,14 @@ namespace LinkedOut {
 			m_SplashWelcomeImage->setObjectName(QString::fromUtf8("SplashWelcomeImage"));
 			m_SplashWelcomeImage->setGeometry(QRect(720, 70, 271, 231));
 			m_SplashWelcomeImage->setFrameShape(QFrame::NoFrame);
-			m_SplashWelcomeImage->setPixmap(QPixmap(QString::fromUtf8(":/LinkedOut/Resources/Splash_Image.jpg")));
+			m_SplashWelcomeImage->setPixmap(QPixmap(QString::fromUtf8("Resources/Splash_Image.jpg")));
 			m_SplashWelcomeImage->setScaledContents(true);
 			m_SplashWelcomeImage->setText(QString());
 		}
 
+
+		
+		
 		//Signup button
 		{
 			m_SplashSignUpButton = new QPushButton(m_Frame);
@@ -119,7 +124,7 @@ namespace LinkedOut {
 			m_SplashSignUpButton->setGeometry(QRect(240, 460, 201, 51));
 			m_SplashSignUpButton->setAutoFillBackground(false);
 			m_SplashSignUpButton->setStyleSheet(QString::fromUtf8("QPushButton:hover{ 	background-color:rgba(38,38,39,220);color: white;}\n"
-				"QPushButton{color:white;background-color:rgb(38, 38, 39);}"));
+				"QPushButton{color:white;background-color:rgb(38, 38, 39);	border-style: none;border-radius: 20px;}"));
 			m_SplashSignUpButton->setFlat(false);
 			m_SplashSignUpButton->setText(QApplication::translate("window", "Sign Up", nullptr));
 
@@ -134,7 +139,7 @@ namespace LinkedOut {
 			m_SplashLoginButton->setGeometry(QRect(470, 460, 201, 51));
 			m_SplashLoginButton->setAutoFillBackground(false);
 			m_SplashLoginButton->setStyleSheet(QString::fromUtf8("QPushButton:hover{ 	background-color:rgba(38,38,39,220);color: white;}\n"
-				"QPushButton{color:white;background-color:rgb(38, 38, 39);}"));
+				"QPushButton{color:white;background-color:rgb(38, 38, 39);	border-style: none;border-radius: 20px;}"));
 			m_SplashLoginButton->setFlat(false);
 			m_SplashLoginButton->setText(QApplication::translate("window", "Login", nullptr));
 		}
@@ -144,10 +149,10 @@ namespace LinkedOut {
 
 	void SplashLayer::SetupSplashEvents() {
 		QObject::connect(m_SplashSignUpButton, &QPushButton::clicked, [this]() {
-			m_MainLayer->SwitchToSignup();
+			m_MainLayer->SwitchToSignup(true);
 			});
 		QObject::connect(m_SplashLoginButton, &QPushButton::clicked, [this]() {
-			m_MainLayer->SwitchToLogin();
+			m_MainLayer->SwitchToLogin(true);
 			});
 	}
 
