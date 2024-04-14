@@ -253,6 +253,7 @@ namespace LinkedOut {
             m_PasswordTextInput->setMaxLength(9999);
             m_PasswordTextInput->setAlignment(Qt::AlignCenter);
             m_PasswordTextInput->setPlaceholderText(QApplication::translate("LinkedOutClass", "Password", nullptr));
+            m_PasswordTextInput->setEchoMode(QLineEdit::Password);
         }
 
         //Remember me checkbox

@@ -15,8 +15,7 @@ namespace LinkedOut {
 		Random::m_RandomEngine = std::mt19937(Random::m_RandomDevice());
 		m_UpdateTimer = new QTimer((QApplication*)this);
 		Window::CreateMain(WindowProps(spec.Name));
-
-		m_Database = CreateRef<DatabaseManager>("E:/LO/Database/LinkedOutUserData.db");
+		m_Database = CreateRef<DatabaseManager>("../Database/LinkedOutUserData.db");
 	}
 	static std::mutex mutex;
 	void Application::Run() {

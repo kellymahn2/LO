@@ -122,7 +122,15 @@ namespace LinkedOut {
 		m_LoginLayer = new LoginLayer(this);
 		m_MessageLayer = new MessageLayer(this);
 
-		m_MessageLayer->WarnInfinite("Hello");
+		m_MessageLayer->InfoInfinite("Hello, Info");
+		m_MessageLayer->WarnInfinite("Hello, Warn");
+
+		m_MessageLayer->InfoTimed(10, "Hello, Info Timed");
+
+		m_MessageLayer->ErrorInfinite("Hello, Error");
+
+
+
 
 		m_SplashLayer->Hide();
 		m_SignupLayer->Hide();
@@ -186,13 +194,12 @@ namespace LinkedOut {
 
 
 
-		std::string statement = fmt::format("INSERT INTO USER VALUES('{}','{}','0/0/0');", userData.Username, userData.Password);
+		std::string statement = fmt::format("INSERT INTO USER(USERNAME,PASSWORD) VALUES ('{}','{}');", userData.Username, userData.Password);
 		try {
 			db->Execute(statement);
-
 		}
 		catch (QueryException& exception) {
-			std::string s = exception.what();
+			return SignupErrorCodes::UserExists;
 		}
 		return SignupErrorCodes::None;
 	}

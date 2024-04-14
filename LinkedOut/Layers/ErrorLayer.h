@@ -33,6 +33,22 @@ namespace LinkedOut {
 		}
 
 		template<typename...Args>
+		void InfoTimed(float aliveDuration,const std::string& format, Args&&...args) {
+			ShowMessage(fmt::format(format, std::forward<Args>(args)...), MessageSeverity::Info, aliveDuration);
+		}
+
+		template<typename...Args>
+		void WarnTimed(float aliveDuration,const std::string& format, Args&&...args) {
+			ShowMessage(fmt::format(format, std::forward<Args>(args)...), MessageSeverity::Warn, aliveDuration);
+		}
+		template<typename...Args>
+		void ErrorTimed(float aliveDuration,const std::string& format, Args&&...args) {
+			ShowMessage(fmt::format(format, std::forward<Args>(args)...), MessageSeverity::Error, aliveDuration);
+		}
+
+
+
+		template<typename...Args>
 		void InfoInfinite(const std::string& format, Args&&...args) {
 			ShowMessage(fmt::format(format, std::forward<Args>(args)...), MessageSeverity::Info,std::numeric_limits<float>::max());
 		}
@@ -67,10 +83,10 @@ namespace LinkedOut {
 			QFrame* MessageFrame;
 			QLabel* MessageLabel;
 			QPushButton* MessagePushButton;
-			bool IsVisible = false;
+			bool IsVisible = true;
 		};
 
-		void ShowMessage(const std::string& message, MessageSeverity severity,float aliveDurationInMS);
+		void ShowMessage(const std::string& message, MessageSeverity severity,float aliveDuration);
 
 		void DestroyMessage(Message& message);
 
