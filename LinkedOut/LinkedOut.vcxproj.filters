@@ -96,9 +96,15 @@
     <ClInclude Include="Layers\CommonErrors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CustomUI\UnitLengthInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="CustomUI\ClickableLabel.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CustomUI\PopupWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

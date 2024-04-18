@@ -3,6 +3,8 @@
 class QVBoxLayout;
 class ClickableLabel;
 class QString;
+class PopupWindow;
+class UnitLengthInput;
 namespace LinkedOut {
 	class MainLayer;
 	class SignupLayer : public Layer{
@@ -26,6 +28,7 @@ namespace LinkedOut {
 
 
 		void OnInputChanged(const QString&);
+		void OnPopupInputChanged(const QString&);
 
 		bool UsernameHasInput();
 		bool PasswordHasInput();
@@ -51,9 +54,11 @@ namespace LinkedOut {
 		QValidator* m_CaptchaValidator = nullptr;
 		QLabel* m_CaptchaLabel = nullptr;
 		QVBoxLayout* m_MainLayout;
-
+		PopupWindow* m_CodePopup = nullptr;
+		QLabel* m_PopupCode = nullptr;
+		UnitLengthInput* m_UnitLengthInputs[4] = { nullptr };
 		bool m_IsShowing = false;
-
+		bool m_IsPopupOpen = true;
 		friend class MainLayer;
 	};
 }

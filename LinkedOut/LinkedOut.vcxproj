@@ -120,6 +120,8 @@
     <ClInclude Include="Core\Layer.h" />
     <ClInclude Include="Core\Random.h" />
     <ClInclude Include="Core\Window.h" />
+    <QtMoc Include="CustomUI\PopupWindow.h" />
+    <ClInclude Include="CustomUI\UnitLengthInput.h" />
     <ClInclude Include="Layers\CommonErrors.h" />
     <ClInclude Include="Layers\SplashLayer.h" />
     <QtMoc Include="CustomUI\ClickableLabel.h" />

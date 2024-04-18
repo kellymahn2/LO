@@ -2,7 +2,7 @@
 #include "Core/Window.h"
 #include "Core/Application.h"
 #include "Core/Random.h"
-
+#include "CustomUI/PopupWindow.h"
 
 
 #include <QMainWindow>
@@ -122,19 +122,10 @@ namespace LinkedOut {
 		m_LoginLayer = new LoginLayer(this);
 		m_MessageLayer = new MessageLayer(this);
 
-		m_MessageLayer->InfoInfinite("Hello, Info");
-		m_MessageLayer->WarnInfinite("Hello, Warn");
-
-		m_MessageLayer->InfoTimed(10, "Hello, Info Timed");
-
-		m_MessageLayer->ErrorInfinite("Hello, Error");
-
-
-
-
 		m_SplashLayer->Hide();
 		m_SignupLayer->Hide();
 		m_LoginLayer->Hide();
+
 
 		m_UserData = GetUserDataStoredLocally();
 		

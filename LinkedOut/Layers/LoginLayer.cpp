@@ -4,7 +4,9 @@
 #include "Core/Window.h"
 #include "CustomUI/ClickableLabel.h"
 #include "CommonErrors.h"
-
+#include "CustomUI/PopupWindow.h"
+#include "CustomUI/UnitLengthInput.h"
+#include "Core/Random.h"
 
 
 #include <QtCore/QVariant>
@@ -46,6 +48,11 @@ namespace LinkedOut {
 
 
         m_Frame->setGeometry(startX, startY, frameSize.width(), frameSize.height());
+
+        if (!m_IsPopupOpen) {
+            m_CodePopup->hide();
+        }
+
     }
 
     void LoginLayer::Show() {
@@ -58,6 +65,18 @@ namespace LinkedOut {
     }
 
 	void LoginLayer::Cleanup() {
+        //Code popup
+        {
+            delete m_UnitLengthInputs[3];
+            delete m_UnitLengthInputs[2];
+            delete m_UnitLengthInputs[1];
+            delete m_UnitLengthInputs[0];
+
+            delete m_PopupCode;
+
+            delete m_CodePopup;
+        }
+
         //Login button
         {
             delete m_LoginButton;
@@ -340,6 +359,44 @@ namespace LinkedOut {
             m_LoginButton->setFocusPolicy(Qt::FocusPolicy::NoFocus);
         }
 
+        //Code popup
+        {
+            const int xCodePadding = 0;
+            const int yCodePadding = 15;
+            const int textWidth = 475;
+            const int textHeight = 20;
+
+
+            const int xInputPadding = 15;
+            const int yInputPadding = 15;
+            const int inputWidth = 100;
+            const int inputHeight = 100;
+
+            const int popupWidth = textWidth;
+
+            const int popupHeight = yCodePadding + textHeight + yCodePadding + yInputPadding + inputHeight + yInputPadding;
+
+
+
+            m_CodePopup = new PopupWindow(popupWidth,popupHeight,m_MainLayer->m_WindowCentralWidget);
+            
+            m_PopupCode = new QLabel(m_CodePopup);
+            m_PopupCode->move(xCodePadding, yCodePadding);
+            m_PopupCode->resize(textWidth, textHeight);
+            m_PopupCode->setStyleSheet("font-style:italic;font-weight:bold;font-size:25px;");
+            m_PopupCode->setAlignment(Qt::AlignCenter);
+         
+            for (int i = 0; i < 4; ++i) {
+                m_UnitLengthInputs[i] = new UnitLengthInput(InputTypeBit_Digit, m_CodePopup);
+                m_UnitLengthInputs[i]->resize(inputWidth, inputHeight);
+                m_UnitLengthInputs[i]->move((i+1) * xInputPadding + i * inputWidth, popupHeight - yInputPadding - inputHeight);
+                m_UnitLengthInputs[i]->setStyleSheet("QLineEdit { border: 1px solid #000000; }"
+                    "QLineEdit:focus { border: 1px solid #ff0000; }");
+                m_UnitLengthInputs[i]->setAlignment(Qt::AlignCenter);
+            }
+        }
+
+
         SetupLoginEvents();
 
 	}
@@ -347,6 +404,33 @@ namespace LinkedOut {
 
     void LoginLayer::OnInputChanged(const QString&) {
         m_LoginButton->setEnabled(UsernameHasInput() && PasswordHasInput() && CaptchaHasInput());
+    }
+
+    void LoginLayer::OnPopupInputChanged(const QString&)
+    {
+        if (!m_UnitLengthInputs[0]->text().isEmpty()
+            && !m_UnitLengthInputs[1]->text().isEmpty()
+            && !m_UnitLengthInputs[2]->text().isEmpty()
+            && !m_UnitLengthInputs[3]->text().isEmpty()
+            ) 
+        {
+            uint32_t num = 0;
+            num += m_UnitLengthInputs[0]->text().toUInt() * 1000;
+            num += m_UnitLengthInputs[1]->text().toUInt() * 100;
+            num += m_UnitLengthInputs[2]->text().toUInt() * 10;
+            num += m_UnitLengthInputs[3]->text().toUInt() * 1;
+
+
+            if(num != m_PopupCode->text().toUInt()){
+                //TODO: login
+                m_IsPopupOpen = false;
+            }
+            else {
+                m_MainLayer->m_MessageLayer->Error("Incorrect code");
+                m_IsPopupOpen = false;
+            }
+        }
+        m_IsPopupOpen = true;
     }
 
     bool LoginLayer::UsernameHasInput()
@@ -369,6 +453,27 @@ namespace LinkedOut {
             m_MainLayer->SwitchToSignup(true);
             });
 
+        QObject::connect(m_CodePopup, &PopupWindow::opened, [this]() {
+            uint32_t code = Random::GenerateUInt32(1000, 10000);
+            m_PopupCode->setText(QString::number(code));
+            m_UnitLengthInputs[0]->setText("");
+            m_UnitLengthInputs[1]->setText("");
+            m_UnitLengthInputs[2]->setText("");
+            m_UnitLengthInputs[3]->setText("");
+            });
+
+        QObject::connect(m_CodePopup, &PopupWindow::closed, [this]() {
+            m_MainLayer->SwitchToLogin(false);
+            });
+
+        QObject::connect(m_UnitLengthInputs[0], &UnitLengthInput::textChanged, LO_BIND_FN(OnPopupInputChanged));
+        QObject::connect(m_UnitLengthInputs[1], &UnitLengthInput::textChanged, LO_BIND_FN(OnPopupInputChanged));
+        QObject::connect(m_UnitLengthInputs[2], &UnitLengthInput::textChanged, LO_BIND_FN(OnPopupInputChanged));
+        QObject::connect(m_UnitLengthInputs[3], &UnitLengthInput::textChanged, LO_BIND_FN(OnPopupInputChanged));
+
+
+
+
         QObject::connect(m_LoginButton, &QPushButton::clicked, [this]() {
             if (m_MainLayer->m_LastCaptchaNumber != m_CaptchaTextInput->text().toUInt()) {
                 m_MainLayer->m_MessageLayer->Error(INCORRECT_CAPTCHA);
@@ -379,7 +484,11 @@ namespace LinkedOut {
             if (userData.IsValid()) {
                 int  ec = m_MainLayer->Login(userData, m_RememberMeCheckbox->checkState() == Qt::CheckState::Checked);
                 if (ec == LoginErrorCodes_None)
+                {
+                    m_CodePopup->show();
+                    m_IsPopupOpen = true;
                     return;
+                }
                 if ((ec & LoginErrorCodes_IncorrectPassword) || (ec & LoginErrorCodes_IncorrectUsername)) {
                     m_MainLayer->m_MessageLayer->Error(INCORRECT_USERNAME_OR_PASSWORD);
                 }
