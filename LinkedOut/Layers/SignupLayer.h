@@ -16,8 +16,6 @@ namespace LinkedOut {
 		void Hide() override;
 		void OnUpdate() override;
 
-
-
 	private:
 		void SetupSignup();
 		void SetupSignupEvents();
@@ -34,10 +32,9 @@ namespace LinkedOut {
 		bool PasswordHasInput();
 		bool CaptchaHasInput();
 
-		UserData SignupLayer::GetUserDataFromSignupForm();
+		UserInternalData SignupLayer::GetUserDataFromSignupForm();
 	private:
 		MainLayer* m_MainLayer = nullptr;
-		QWidget* m_CentralWidget = nullptr;
 		QFrame* m_MainFrame = nullptr;
 		QFrame* m_Frame = nullptr;
 		QFrame* m_UsernameFrame = nullptr;

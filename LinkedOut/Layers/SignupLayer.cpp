@@ -109,7 +109,6 @@ namespace LinkedOut {
 			delete m_MainFrame;
 		}
 
-		delete m_CentralWidget;
 	}
 
 
@@ -367,12 +366,12 @@ namespace LinkedOut {
 		SetupSignupEvents();
 	}
 
-	UserData SignupLayer::GetUserDataFromSignupForm() {
+	UserInternalData SignupLayer::GetUserDataFromSignupForm() {
 		
 		std::string username = m_UsernameTextInput->text().toStdString();
 		std::string password = m_PasswordTextInput->text().toStdString();
 
-		UserData ret;
+		UserInternalData ret;
 		ret.Username = username;
 		ret.Password = password;
 
@@ -411,15 +410,16 @@ namespace LinkedOut {
 			num += m_UnitLengthInputs[2]->text().toUInt() * 10;
 			num += m_UnitLengthInputs[3]->text().toUInt() * 1;
 
-
 			if (num == m_PopupCode->text().toUInt()) {
-				//TODO: login
 				m_IsPopupOpen = false;
+				m_CodePopup->hide();
+				m_MainLayer->SwitchToUserInformation();
 			}
 			else {
 				m_MainLayer->m_MessageLayer->Error("Incorrect code");
 				m_IsPopupOpen = false;
 			}
+			return;
 		}
 		m_IsPopupOpen = true;
 	}

@@ -19,6 +19,7 @@ class QPushButton;
 class QValidator;
 class QLineEdit;
 class QCheckBox;
+class QComboBox;
 
 
 #define LO_BIND_FN(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
@@ -102,9 +103,10 @@ namespace LinkedOut {
         return true;
     }
 
-    struct UserData {
+    struct UserInternalData {
         std::string Username;
         std::string Password;
+        uint32_t UniqueUserID;
 
         bool IsValid() const{
             return IsValidUsername(Username) && IsValidPassword(Password);
@@ -116,6 +118,19 @@ namespace LinkedOut {
 
 
     };
+
+
+    struct UserData {
+
+        std::string FirstName;
+        std::string LastName;
+
+        std::string BirthDate;
+        std::vector<std::string> WantedJobPositions;
+        std::vector<std::string> WantedCompanies;
+        std::string PlaceOfEducation;
+    };
+
 
 
     enum class SignupErrorCodes {
@@ -131,5 +146,13 @@ namespace LinkedOut {
         LoginErrorCodes_IncorrectPassword = BIT(1),
         LoginErrorCodes_DBError = BIT(2)
     };
+
+    typedef int UserInformationStoreErrorCodes;
+
+    enum UserInformationStoreErrorCodes_ {
+        UserInformationStoreErrorCodes_None = 0,
+        UserInformationStoreErrorCodes_DBError = BIT(1),
+    };
+
 
 }

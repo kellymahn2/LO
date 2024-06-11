@@ -420,15 +420,18 @@ namespace LinkedOut {
             num += m_UnitLengthInputs[2]->text().toUInt() * 10;
             num += m_UnitLengthInputs[3]->text().toUInt() * 1;
 
+            std::string s = m_PopupCode->text().toStdString();
 
-            if(num != m_PopupCode->text().toUInt()){
-                //TODO: login
+            if(num == m_PopupCode->text().toUInt()){
+                m_CodePopup->hide();
+                m_MainLayer->SwitchToUserInformation();
                 m_IsPopupOpen = false;
             }
             else {
                 m_MainLayer->m_MessageLayer->Error("Incorrect code");
                 m_IsPopupOpen = false;
             }
+            return;
         }
         m_IsPopupOpen = true;
     }
@@ -470,9 +473,6 @@ namespace LinkedOut {
         QObject::connect(m_UnitLengthInputs[1], &UnitLengthInput::textChanged, LO_BIND_FN(OnPopupInputChanged));
         QObject::connect(m_UnitLengthInputs[2], &UnitLengthInput::textChanged, LO_BIND_FN(OnPopupInputChanged));
         QObject::connect(m_UnitLengthInputs[3], &UnitLengthInput::textChanged, LO_BIND_FN(OnPopupInputChanged));
-
-
-
 
         QObject::connect(m_LoginButton, &QPushButton::clicked, [this]() {
             if (m_MainLayer->m_LastCaptchaNumber != m_CaptchaTextInput->text().toUInt()) {
@@ -518,12 +518,12 @@ namespace LinkedOut {
         m_LoginButton->setEnabled(false);
     }
 
-    UserData LoginLayer::GetUserDataFromLoginForm() {
+    UserInternalData LoginLayer::GetUserDataFromLoginForm() {
        
         std::string username = m_UsernameTextInput->text().toStdString();
         std::string password = m_PasswordTextInput->text().toStdString();
 
-        UserData ret;
+        UserInternalData ret;
         ret.Username = username;
         ret.Password = password;
         return ret;

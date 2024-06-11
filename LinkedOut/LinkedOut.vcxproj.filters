@@ -58,6 +58,9 @@
     <ClCompile Include="Layers\SplashLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Layers\UserInformationLayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h">
@@ -97,6 +100,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CustomUI\UnitLengthInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Layers\UserInformationLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -24,7 +24,7 @@ namespace LinkedOut{
 
         void Cleanup();
 
-        UserData GetUserDataFromLoginForm();
+        UserInternalData GetUserDataFromLoginForm();
 
         void CleanupInputs();
 

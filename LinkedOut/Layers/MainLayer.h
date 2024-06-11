@@ -4,6 +4,7 @@
 #include "LoginLayer.h"
 #include "SplashLayer.h"
 #include "ErrorLayer.h"
+#include "UserInformationLayer.h"
 
 class QLayout;
 
@@ -37,25 +38,28 @@ namespace LinkedOut {
 		void SetupSplashEvents();
 
 
-		UserData GetUserDataStoredLocally();
+		UserInternalData GetUserDataStoredLocally();
 	private:
 		void SwitchToSignup(bool cleanAll);
 		void SwitchToLogin(bool cleanAll);
+		void SwitchToUserInformation();
 	private:
-		SignupErrorCodes Signup(const UserData& userData);
-		LoginErrorCodes Login(const UserData& userData,bool storeLocally);
+		SignupErrorCodes Signup(const UserInternalData& userData);
+		LoginErrorCodes Login(const UserInternalData& userData,bool storeLocally);
+		UserInformationStoreErrorCodes StoreUserInformation(const UserData& userData);
 
-		void StoreUserDataLocally(const UserData& userData);
+		void StoreUserDataLocally(const UserInternalData& userData);
 
 
 		bool UserExists(const std::string& username);
-		UserData GetUserDataFromUsername(const std::string& userName);
-
+		UserInternalData GetUserDataFromUsername(const std::string& userName);
+		UserData GetUserInformation(uint32_t userID);
+		uint32_t GetUniqueUserID(const std::string& userName);
 		void SetCurrentLayer(Layer* layer);
 
 	private:
 
-		UserData m_UserData;
+		UserInternalData m_UserData;
 
 		QWidget* m_WindowCentralWidget;
 
@@ -70,10 +74,12 @@ namespace LinkedOut {
 		LoginLayer* m_LoginLayer;
 		SplashLayer* m_SplashLayer;
 		MessageLayer* m_MessageLayer;
+		UserInformationLayer* m_UserInformationLayer;
 
 		friend class SignupLayer;
 		friend class LoginLayer;
 		friend class SplashLayer;
 		friend class MessageLayer;
+		friend class UserInformationLayer;
 	};
 }

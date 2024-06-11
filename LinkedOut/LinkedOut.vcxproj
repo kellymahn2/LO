@@ -69,11 +69,13 @@
       <AdditionalIncludeDirectories>$(SolutionDir)LinkedOut;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <PreprocessorDefinitions>$(Qt_DEFINES_);%(PreprocessorDefinitions)_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <PreprocessorDefinitions>_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
@@ -111,6 +113,7 @@
     <ClCompile Include="Layers\MainLayer.cpp" />
     <ClCompile Include="Layers\SignupLayer.cpp" />
     <ClCompile Include="Layers\SplashLayer.cpp" />
+    <ClCompile Include="Layers\UserInformationLayer.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +123,7 @@
     <ClInclude Include="Core\Layer.h" />
     <ClInclude Include="Core\Random.h" />
     <ClInclude Include="Core\Window.h" />
+    <ClInclude Include="Layers\UserInformationLayer.h" />
     <QtMoc Include="CustomUI\PopupWindow.h" />
     <ClInclude Include="CustomUI\UnitLengthInput.h" />
     <ClInclude Include="Layers\CommonErrors.h" />
