@@ -58,9 +58,6 @@ namespace LinkedOut {
 		sizePolicy.setHorizontalStretch(0);
 		sizePolicy.setVerticalStretch(0);
 
-
-
-
 		//Main frame
 		{
 			m_MainFrame = new QFrame(m_MainLayer->m_WindowCentralWidget);
@@ -143,6 +140,8 @@ namespace LinkedOut {
 			m_SplashLoginButton->setFlat(false);
 			m_SplashLoginButton->setText(QApplication::translate("window", "Login", nullptr));
 		}
+
+		m_MainLayer->m_LayersLayout->addWidget(m_MainFrame);
 
 		SetupSplashEvents();
 	}

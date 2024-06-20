@@ -19,6 +19,9 @@ namespace LinkedOut {
 		void Hide() override;
 
 		void OnUpdate() override;
+        virtual void* GetMainFrame()const override {
+            return m_MainFrame;
+        }
     private:
         void SetupUserInformation();
         void SetupUserInformationEvents();

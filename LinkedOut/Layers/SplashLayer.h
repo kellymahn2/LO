@@ -24,7 +24,9 @@ namespace LinkedOut {
 		void SetupSplashEvents();
 
 		void Cleanup();
-
+		virtual void* GetMainFrame()const override {
+			return m_MainFrame;
+		}
 	private:
 		MainLayer* m_MainLayer;
 

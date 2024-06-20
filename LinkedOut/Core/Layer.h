@@ -12,6 +12,8 @@ namespace LinkedOut {
 		virtual void Show() = 0;
 		virtual void Hide() = 0;
 
+		virtual void* GetMainFrame()const = 0;
+
 		virtual void OnUpdate() = 0;
 		const std::string& GetLayerName()const { return m_Name; }
 	protected:

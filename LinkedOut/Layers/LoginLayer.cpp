@@ -395,7 +395,7 @@ namespace LinkedOut {
                 m_UnitLengthInputs[i]->setAlignment(Qt::AlignCenter);
             }
         }
-
+        m_MainLayer->m_LayersLayout->addWidget(m_MainFrame);
 
         SetupLoginEvents();
 

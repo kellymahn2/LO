@@ -4,6 +4,7 @@
 #include "LoginLayer.h"
 #include "SplashLayer.h"
 #include "ErrorLayer.h"
+#include "NavigationMenu.h"
 #include "UserInformationLayer.h"
 
 class QLayout;
@@ -23,7 +24,6 @@ namespace LinkedOut {
 	
 	struct Message {
 		std::string Error;
-
 	};
 
 
@@ -34,10 +34,6 @@ namespace LinkedOut {
 		virtual void OnDetach() ;
 		virtual void OnUpdate() ;
 	private:
-		void SetupSplash();
-		void SetupSplashEvents();
-
-
 		UserInternalData GetUserDataStoredLocally();
 	private:
 		void SwitchToSignup(bool cleanAll);
@@ -58,22 +54,23 @@ namespace LinkedOut {
 		void SetCurrentLayer(Layer* layer);
 
 	private:
-
 		UserInternalData m_UserData;
 
 		QWidget* m_WindowCentralWidget;
-
+		QVBoxLayout* m_WindowCentralLayout;
 
 		Layer* m_CurrentLayer;
-
-		
 		
 		uint32_t m_LastCaptchaNumber;
+
+		QVBoxLayout* m_LayersLayout;
+		QWidget* m_LayersWidget;
 
 		SignupLayer* m_SignupLayer;
 		LoginLayer* m_LoginLayer;
 		SplashLayer* m_SplashLayer;
 		MessageLayer* m_MessageLayer;
+		NavigationMenu* m_NavigationMenu;
 		UserInformationLayer* m_UserInformationLayer;
 
 		friend class SignupLayer;
@@ -81,5 +78,6 @@ namespace LinkedOut {
 		friend class SplashLayer;
 		friend class MessageLayer;
 		friend class UserInformationLayer;
+		friend class NavigationMenu;
 	};
 }

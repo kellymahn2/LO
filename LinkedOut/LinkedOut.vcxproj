@@ -111,6 +111,12 @@
     <ClCompile Include="Layers\ErrorLayer.cpp" />
     <ClCompile Include="Layers\LoginLayer.cpp" />
     <ClCompile Include="Layers\MainLayer.cpp" />
+    <ClCompile Include="Layers\NavigationMenu.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </ClCompile>
     <ClCompile Include="Layers\SignupLayer.cpp" />
     <ClCompile Include="Layers\SplashLayer.cpp" />
     <ClCompile Include="Layers\UserInformationLayer.cpp" />
@@ -123,6 +129,10 @@
     <ClInclude Include="Core\Layer.h" />
     <ClInclude Include="Core\Random.h" />
     <ClInclude Include="Core\Window.h" />
+    <QtMoc Include="CustomUI\SearchBar.h" />
+    <QtMoc Include="CustomUI\TitledButton.h" />
+    <ClInclude Include="CustomUI\Division.h" />
+    <ClInclude Include="Layers\NavigationMenu.h" />
     <ClInclude Include="Layers\UserInformationLayer.h" />
     <QtMoc Include="CustomUI\PopupWindow.h" />
     <ClInclude Include="CustomUI\UnitLengthInput.h" />

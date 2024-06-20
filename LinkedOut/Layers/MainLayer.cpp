@@ -15,6 +15,7 @@
 #include <qvalidator.h>
 #include <QTreeWidget>
 #include <QDate>
+#include <QBoxLayout>
 
 #include <iostream>
 
@@ -23,6 +24,11 @@ namespace LinkedOut {
 
 
 	static constexpr const char* TempFileName = "LinkedOutUD.txt";
+
+	static QIcon LoadIcon(const std::string& icon) {
+		return QIcon(QString::fromStdString(icon));
+	}
+
 
 	UserInternalData MainLayer::GetUserDataStoredLocally() {
 		FileSystem::path tempPath = QStandardPaths::writableLocation(QStandardPaths::TempLocation).toStdString();
@@ -150,29 +156,76 @@ namespace LinkedOut {
 
 		window->setWindowTitle(QApplication::translate("window", "LinkedOut", nullptr));
 
-
+		m_WindowCentralLayout = new QVBoxLayout;
+		m_LayersLayout = new QVBoxLayout;
+		m_LayersWidget = new QWidget;
+		m_LayersLayout->setContentsMargins(0, 0, 0, 0);
+		
 		m_SplashLayer = new SplashLayer(this);
 		m_SignupLayer = new SignupLayer(this);
 		m_LoginLayer = new LoginLayer(this);
 		m_MessageLayer = new MessageLayer(this);
 		m_UserInformationLayer = new UserInformationLayer(this);
 
+		{
+			std::string buttonOnStyle = 
+				R"(
+				QLabel{
+					border:none;
+					border-bottom:2px solid #1db82f;
+					color: #1db82f;
+				}
+				QPushButton{
+					border:none;
+				}	
+				)";
+
+			std::string buttonOffStyle =
+				R"(
+				
+				QPushButton{
+					border:none;
+				}					
+
+				)";
+
+
+			NavigationMenuSpecification spec{};
+			spec.ButtonMinWidth = 20;
+			spec.ButtonHeight = 40;
+			spec.Buttons["Home"] = { LoadIcon("Resources/NavigationHomeButton.png"), []() {} };
+			spec.Buttons["My Network"] = { LoadIcon("Resources/NavigationQueueIcon.png"), []() {} };
+			spec.Buttons["Jobs"] = { LoadIcon("Resources/NavigationJobsIcon.png"),[]() {} };
+			spec.Buttons["Messaging"] = { LoadIcon("Resources/NavigationMessagingIcon.png"),[]() {} };
+			spec.ButtonOnStyle = buttonOnStyle;
+			spec.ButtonOffStyle = buttonOffStyle;
+			m_NavigationMenu = new NavigationMenu(this, spec);
+		}
+
 		m_SplashLayer->Hide();
 		m_SignupLayer->Hide();
 		m_LoginLayer->Hide();
 		m_UserInformationLayer->Hide();
-
-
-		m_UserData = GetUserDataStoredLocally();
+		m_NavigationMenu->Hide();
 		
+		m_UserData = GetUserDataStoredLocally();
 
 		SetCurrentLayer(m_SplashLayer);
 
 		if (!m_UserData.IsValid()) {
 			SetCurrentLayer(m_SplashLayer);
 		}
+		m_LayersWidget->setLayout(m_LayersLayout);
 
+		m_WindowCentralLayout->addWidget(m_LayersWidget);
+		
+		m_WindowCentralLayout->setContentsMargins(0, 0, 0, 0);
+
+
+		m_WindowCentralWidget->setLayout(m_WindowCentralLayout);
+		
 		QMetaObject::connectSlotsByName(window);
+
 		#else
 		treeWidget = new QTreeWidget();
 		treeWidget->setColumnCount(1);
@@ -192,13 +245,13 @@ namespace LinkedOut {
 		treeWidget->expandAll();
 		#endif	
 	}
+
 	void MainLayer::OnDetach(){
 		delete m_LoginLayer;
 		delete m_SignupLayer;
 		delete m_SplashLayer;
 		delete m_WindowCentralWidget;
 	}
-
 
 	void MainLayer::OnUpdate(){
 #if TEST ==0 
@@ -210,14 +263,16 @@ namespace LinkedOut {
 #endif
 	}
 	
-
-
 	void MainLayer::SetCurrentLayer(Layer* layer) {
-		if (m_CurrentLayer)
+		if (m_CurrentLayer) {
+			//m_WindowCentralLayout->removeWidget((QWidget*)m_CurrentLayer->GetMainFrame());
 			m_CurrentLayer->Hide();
-		layer->Show();
+		}
+		//m_WindowCentralLayout->addWidget((QWidget*)layer->GetMainFrame());
 		m_CurrentLayer = layer;
+		layer->Show();
 		m_MessageLayer->Show();
+		m_NavigationMenu->Show();
 	}
 
 	bool MainLayer::UserExists(const std::string& username) {

@@ -1,15 +1,38 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="E:/LO/LO/Database/LinkedOutUserData.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="browser pragmas query structure" current="2"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="933"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,4:mainUSER"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="USER" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="76"/><column index="2" value="82"/><column index="3" value="79"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">
-DROP TABLE USER;
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="E:/LO/LO/Database/LinkedOutUserData.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="pragmas query structure browser" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1359"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,4:mainUSER"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="USER" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort><column index="7" mode="1"/></sort><column_widths><column index="1" value="76"/><column index="2" value="287"/><column index="3" value="79"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">DROP TABLE USER;
+DROP TABLE WANTEDUSERCOMPANY;
+DROP TABLE WANTEDUSERJOB;
 
 CREATE TABLE USER(
 	USERNAME TEXT(9999),
-	PASSWORD TEXT(9999),
-	BIRTHDATE DATE,
-	JOBTITLE TEXT(255),
-	COMPANY TEXT(255),
-	PLACEOFSTUDY TEXT(500)
-);
-SELECT * FROM USER;
+	PASSWORD TEXT(9999),
+	FIRSTNAME TEXT(500),
+	LASTNAME TEXT(500),
+	BIRTHDATE VARCHAR(255),
+	PLACEOFSTUDY TEXT(500),
+	UNIQUE_USERID INTEGER PRIMARY KEY AUTOINCREMENT
+);
+
+CREATE TABLE WANTEDUSERCOMPANY(
+	UNIQUE_USERID INT,
+	COMPANY_NAME TEXT(500)
+);
+
+CREATE TABLE WANTEDUSERJOB(
+	UNIQUE_USERID INT,
+	JOB_TITLE TEXT(500)
+);
+
+
+SELECT * FROM USER;
+SELECT * FROM WANTEDUSERCOMPANY;
+SELECT * FROM WANTEDUSERJOB;	
+
+
+
+
 </sql><sql name="SQL 3">
-SELECT * FROM USER;
-</sql><current_tab id="0"/></tab_sql></sqlb_project>
+
+SELECT * FROM USER;
+SELECT * FROM WANTEDUSERCOMPANY;
+SELECT * FROM WANTEDUSERJOB;	
+</sql><current_tab id="1"/></tab_sql></sqlb_project>

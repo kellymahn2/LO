@@ -56,7 +56,11 @@ namespace LinkedOut {
 
 		m_MessageCloseIcon = new QIcon();
 		m_MessageCloseIcon->addFile(QString::fromUtf8("Resources/MessageCloseButton.png"), QSize(), QIcon::Normal, QIcon::Off);
+		m_MainLayer->m_LayersLayout->addWidget(m_MessagesFrame);
 		m_Now = std::chrono::high_resolution_clock::now();
+
+
+
 	}
 
 	MessageLayer::~MessageLayer()

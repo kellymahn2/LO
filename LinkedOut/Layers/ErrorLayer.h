@@ -66,6 +66,11 @@ namespace LinkedOut {
 		void Show() override;
 		void Hide() override;
 		void OnUpdate() override;
+
+		virtual void* GetMainFrame()const override {
+			return m_MessagesFrame;
+		}
+
 	private:
 
 		enum class MessageSeverity {

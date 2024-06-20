@@ -27,6 +27,9 @@ namespace LinkedOut {
 		static Window* GetMainWindow() { return s_MainWindow; }
 		QMainWindow* GetNativeHandle() { return m_NativeWindow; }
 
+		const WindowProps& GetWindowProps()const { return m_Props; }
+
+
 	private:
 		Window(const WindowProps& props);
 		~Window();
