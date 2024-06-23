@@ -109,6 +109,7 @@
     <ClCompile Include="Core\DatabaseManager.cpp" />
     <ClCompile Include="Core\Window.cpp" />
     <ClCompile Include="Layers\ErrorLayer.cpp" />
+    <ClCompile Include="Layers\Home.cpp" />
     <ClCompile Include="Layers\LoginLayer.cpp" />
     <ClCompile Include="Layers\MainLayer.cpp" />
     <ClCompile Include="Layers\NavigationMenu.cpp">
@@ -132,6 +133,7 @@
     <QtMoc Include="CustomUI\SearchBar.h" />
     <QtMoc Include="CustomUI\TitledButton.h" />
     <ClInclude Include="CustomUI\Division.h" />
+    <ClInclude Include="Layers\Home.h" />
     <ClInclude Include="Layers\NavigationMenu.h" />
     <ClInclude Include="Layers\UserInformationLayer.h" />
     <QtMoc Include="CustomUI\PopupWindow.h" />

@@ -189,6 +189,13 @@ namespace LinkedOut {
 
 				)";
 
+			std::string profileOpenStyle =
+				R"(
+				
+				QPushButton{
+					border:none;
+				}
+				)";
 
 			NavigationMenuSpecification spec{};
 			spec.ButtonMinWidth = 20;
@@ -199,6 +206,7 @@ namespace LinkedOut {
 			spec.Buttons["Messaging"] = { LoadIcon("Resources/NavigationMessagingIcon.png"),[]() {} };
 			spec.ButtonOnStyle = buttonOnStyle;
 			spec.ButtonOffStyle = buttonOffStyle;
+			spec.ProfileOpenStyle = profileOpenStyle;
 			m_NavigationMenu = new NavigationMenu(this, spec);
 		}
 

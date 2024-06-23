@@ -30,6 +30,7 @@ namespace LinkedOut {
 		float ButtonHeight;
 		std::string ButtonOnStyle;
 		std::string ButtonOffStyle;
+		std::string ProfileOpenStyle;
 	};
 
 
@@ -60,6 +61,7 @@ namespace LinkedOut {
 		QHBoxLayout* m_ButtonsContainerLayout;
 		QWidget* m_ButtonsContainer;
 
+		TitledButton* m_ProfileOpenButton;
 		std::string m_ActiveTab;
 	};
 }

@@ -18,9 +18,8 @@ namespace LinkedOut {
 	NavigationMenu::NavigationMenu(MainLayer* mainLayer, const NavigationMenuSpecification& specification)
 		:m_Specification(specification),m_MainLayer(mainLayer),m_NavigationDivision(m_MainLayer->m_WindowCentralWidget)
 	{
-        m_NavigationDivision.Layout->setContentsMargins(0, 0, 0, 0);
+        m_NavigationDivision.Layout->setContentsMargins(5, 0, 5, 0);
         m_NavigationDivision.Widget->setSizePolicy(QSizePolicy(QSizePolicy::Preferred,QSizePolicy::Maximum));
-        
         CreateSearchBar();
         CreateButtons();
         CreateProfileDropdown();
@@ -92,11 +91,17 @@ namespace LinkedOut {
             m_ButtonsContainerLayout->addWidget(titledButton);
         }
         m_ButtonsContainer->setLayout(m_ButtonsContainerLayout);
+        
         m_NavigationDivision.Layout->addWidget(m_ButtonsContainer,2,Qt::AlignCenter);
+
     }
     void NavigationMenu::CreateProfileDropdown()
     {
-
+        m_ProfileOpenButton = new TitledButton(QIcon("Resources/NavigationProfileOpenIcon.png"),
+                                                    std::max(CalcTextSize(m_NavigationDivision.Widget->font(), "Profile").width(),30), (uint32_t)m_Specification.ButtonHeight,0,
+                                                    QString("Profile"), m_MainLayer->m_WindowCentralWidget);
+        m_ProfileOpenButton->setStyleSheet(QString::fromStdString(m_Specification.ProfileOpenStyle));
+        m_NavigationDivision.Layout->addWidget(m_ProfileOpenButton);
     }
     void NavigationMenu::ActivateTab()
     {
