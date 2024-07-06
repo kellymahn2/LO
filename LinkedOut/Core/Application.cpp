@@ -40,7 +40,6 @@ namespace LinkedOut {
 		
 		Window::GetMainWindow()->GetNativeHandle()->repaint();
 		Window::GetMainWindow()->GetNativeHandle()->update();
-
 	}
 
 

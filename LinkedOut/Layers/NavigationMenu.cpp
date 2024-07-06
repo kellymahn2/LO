@@ -20,6 +20,7 @@ namespace LinkedOut {
 	{
         m_NavigationDivision.Layout->setContentsMargins(5, 0, 5, 0);
         m_NavigationDivision.Widget->setSizePolicy(QSizePolicy(QSizePolicy::Preferred,QSizePolicy::Maximum));
+        m_NavigationDivision.Widget->setStyleSheet("background-color:white;");
         CreateSearchBar();
         CreateButtons();
         CreateProfileDropdown();

@@ -169,7 +169,7 @@ namespace LinkedOut {
         //Main frame
         {
             m_MainFrame = new QFrame(m_MainLayer->m_WindowCentralWidget);
-            m_MainFrame->setObjectName(QString::fromUtf8("MainFrame"));
+            m_MainFrame->setObjectName(QString::fromUtf8("Login_MainFrame"));
             m_MainFrame->setGeometry(QRect(0, 0, 1280, 720));
             sizePolicy.setHeightForWidth(m_MainFrame->sizePolicy().hasHeightForWidth());
             m_MainFrame->setSizePolicy(sizePolicy);

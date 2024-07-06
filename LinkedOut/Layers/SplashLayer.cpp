@@ -62,13 +62,7 @@ namespace LinkedOut {
 		{
 			m_MainFrame = new QFrame(m_MainLayer->m_WindowCentralWidget);
 			m_MainFrame->setObjectName(QString::fromUtf8("SplashMainFrame"));
-			m_MainFrame->setGeometry(QRect(0, 0, 1280, 720));
-			sizePolicy.setHeightForWidth(m_MainFrame->sizePolicy().hasHeightForWidth());
-			m_MainFrame->setSizePolicy(sizePolicy);
-			m_MainFrame->setSizeIncrement(QSize(0, 0));
 			m_MainFrame->setStyleSheet(QString::fromUtf8("background-color:rgb(51,52,54);color:white;width:inherited;"));
-			m_MainFrame->setFrameShape(QFrame::StyledPanel);
-			m_MainFrame->setFrameShadow(QFrame::Raised);
 		}
 
 		//Splash frame

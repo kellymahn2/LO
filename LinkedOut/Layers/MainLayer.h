@@ -6,6 +6,10 @@
 #include "ErrorLayer.h"
 #include "NavigationMenu.h"
 #include "UserInformationLayer.h"
+#include "HomeLayer.h"
+#include "Core/Account.h"
+#include "Core/Person.h"
+#include "Core/Company.h"
 
 class QLayout;
 
@@ -20,26 +24,62 @@ class QLineEdit;
 class QVBoxLayout;
 
 namespace LinkedOut {
-
 	
+
+	struct SuggestedUserPosts {
+		std::vector<Ref<Post>> FollowingPosts;
+		std::vector<Ref<Post>> SuggestedPosts;
+		std::vector<Ref<Post>> RandomPosts;
+	};
+
+
+	//TODO: change layers to super static classes.
+
 	struct Message {
 		std::string Error;
 	};
 
-
-
 	class MainLayer{
 	public:
+		MainLayer();
 		virtual void OnAttach() ;
 		virtual void OnDetach() ;
 		virtual void OnUpdate() ;
+
+		static MainLayer& Get() { return *s_Instance; }
+
 	private:
 		UserInternalData GetUserDataStoredLocally();
 	private:
 		void SwitchToSignup(bool cleanAll);
 		void SwitchToLogin(bool cleanAll);
 		void SwitchToUserInformation();
+		void SwitchToHome();
 	private:
+
+		Ref<Person> GetPerson(const std::string& id);
+		Ref<Company> GetCompany(const std::string& id);
+		Ref<Job> GetJob(const std::string& id);
+		Ref<Post> GetPost(const std::string& id);
+
+
+		void LikePost(Ref<Post> post);
+		void RepostPost(Ref<Post> post);
+
+		std::vector<Ref<Person>> GetUserSuggestions(Ref<Person> person);
+		std::vector<Ref<Person>> GetUserRequests(Ref<Person> person);
+		std::vector<Ref<Person>> GetCompanyFollowers(Ref<Company> company);
+		
+		std::vector<Ref<Job>> GetUserJobs(Ref<Person> person);
+
+		std::vector<Ref<Post>> GetSuggestedUserPostsFromFollowed(Ref<Person> person);
+		std::vector<Ref<Post>> GetSuggestedUserPostsFromSameCompany(Ref<Person> person);
+		std::vector<Ref<Post>> GetSuggestedUserPostsFromRandom(Ref<Person> person);
+
+		SuggestedUserPosts GetSuggestedUserPosts(Ref<Person> person);
+
+		//std::vector<CommentSpecification> GetPostComments(Post& post);
+
 		SignupErrorCodes Signup(const UserInternalData& userData);
 		LoginErrorCodes Login(const UserInternalData& userData,bool storeLocally);
 		UserInformationStoreErrorCodes StoreUserInformation(const UserData& userData);
@@ -53,13 +93,14 @@ namespace LinkedOut {
 		uint32_t GetUniqueUserID(const std::string& userName);
 		void SetCurrentLayer(Layer* layer);
 
+
 	private:
 		UserInternalData m_UserData;
 
 		QWidget* m_WindowCentralWidget;
 		QVBoxLayout* m_WindowCentralLayout;
 
-		Layer* m_CurrentLayer;
+		Layer* m_CurrentLayer = nullptr;
 		
 		uint32_t m_LastCaptchaNumber;
 
@@ -72,6 +113,19 @@ namespace LinkedOut {
 		MessageLayer* m_MessageLayer;
 		NavigationMenu* m_NavigationMenu;
 		UserInformationLayer* m_UserInformationLayer;
+		HomeLayer* m_HomeLayer;
+
+		std::unordered_map<std::string, Ref<Person>> m_IDToPersonMap;
+		std::unordered_map<std::string, Ref<Company>> m_IDToCompanyMap;
+		std::unordered_map<std::string, Ref<Job>> m_IDToJobMap;
+		std::unordered_map<std::string, Ref<Post>> m_IDToPostMap;
+
+
+		Ref<Account> m_CurrentUser;
+
+
+		static MainLayer* s_Instance;
+
 
 		friend class SignupLayer;
 		friend class LoginLayer;
@@ -79,5 +133,10 @@ namespace LinkedOut {
 		friend class MessageLayer;
 		friend class UserInformationLayer;
 		friend class NavigationMenu;
+		friend class HomeLayer;
+		friend class NetworkUser;
+		friend class NetworkComany;
+		friend class JobsUser;
+		friend class JobsCompany;
 	};
 }

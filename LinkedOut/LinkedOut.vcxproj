@@ -107,9 +107,15 @@
     <QtUic Include="LinkedOut.ui" />
     <ClCompile Include="Core\Application.cpp" />
     <ClCompile Include="Core\DatabaseManager.cpp" />
+    <ClCompile Include="Core\Job.cpp" />
+    <ClCompile Include="Core\PasswordUtils.cpp" />
+    <ClCompile Include="Core\Person.cpp" />
     <ClCompile Include="Core\Window.cpp" />
+    <ClCompile Include="Layers\CommentUI.cpp" />
     <ClCompile Include="Layers\ErrorLayer.cpp" />
-    <ClCompile Include="Layers\Home.cpp" />
+    <ClCompile Include="Layers\HomeLayer.cpp" />
+    <ClCompile Include="Layers\JobsCompany.cpp" />
+    <ClCompile Include="Layers\JobsUser.cpp" />
     <ClCompile Include="Layers\LoginLayer.cpp" />
     <ClCompile Include="Layers\MainLayer.cpp" />
     <ClCompile Include="Layers\NavigationMenu.cpp">
@@ -118,22 +124,51 @@
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
     </ClCompile>
+    <ClCompile Include="Layers\NetworkCompany.cpp" />
+    <ClCompile Include="Layers\NetworkUser.cpp" />
+    <ClCompile Include="Layers\PostUI.cpp" />
     <ClCompile Include="Layers\SignupLayer.cpp" />
     <ClCompile Include="Layers\SplashLayer.cpp" />
     <ClCompile Include="Layers\UserInformationLayer.cpp" />
-    <ClCompile Include="main.cpp" />
+    <QtMoc Include="main.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Core\Account.h" />
     <ClInclude Include="Core\Application.h" />
     <ClInclude Include="Core\Base.h" />
+    <ClInclude Include="Core\Comment.h" />
+    <ClInclude Include="Core\Company.h" />
+    <ClInclude Include="Core\DirectMessage.h" />
+    <ClInclude Include="Core\Content.h" />
     <ClInclude Include="Core\DatabaseManager.h" />
+    <ClInclude Include="Core\Job.h" />
     <ClInclude Include="Core\Layer.h" />
+    <ClInclude Include="Core\Like.h" />
+    <ClInclude Include="Core\PasswordUtils.h" />
+    <ClInclude Include="Core\Person.h" />
+    <ClInclude Include="Core\Post.h" />
     <ClInclude Include="Core\Random.h" />
+    <ClInclude Include="Core\Skill.h" />
+    <ClInclude Include="Core\Time.h" />
+    <QtMoc Include="Layers\PostUI.h" />
+    <ClInclude Include="CustomUI\Separator.h" />
     <ClInclude Include="Core\Window.h" />
     <QtMoc Include="CustomUI\SearchBar.h" />
     <QtMoc Include="CustomUI\TitledButton.h" />
     <ClInclude Include="CustomUI\Division.h" />
-    <ClInclude Include="Layers\Home.h" />
+    <QtMoc Include="Layers\HomeLayer.h" />
+    <QtMoc Include="CustomUI\TreeNode.h" />
+    <ClInclude Include="Layers\CommentUI.h" />
+    <QtMoc Include="Layers\NetworkCompany.h" />
+    <ClInclude Include="Layers\JobsCompany.h" />
+    <ClInclude Include="Layers\JobsUser.h" />
+    <ClInclude Include="Layers\Network.h" />
+    <QtMoc Include="Layers\NetworkUser.h" />
     <ClInclude Include="Layers\NavigationMenu.h" />
     <ClInclude Include="Layers\UserInformationLayer.h" />
     <QtMoc Include="CustomUI\PopupWindow.h" />

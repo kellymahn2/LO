@@ -31,9 +31,6 @@
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Core\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -64,7 +61,34 @@
     <ClCompile Include="Layers\NavigationMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Layers\Home.cpp">
+    <ClCompile Include="Layers\HomeLayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PasswordUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Layers\PostUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Layers\CommentUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Layers\NetworkUser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Layers\NetworkCompany.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Layers\JobsUser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Layers\JobsCompany.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Job.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Person.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -117,7 +141,55 @@
     <ClInclude Include="CustomUI\Division.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Layers\Home.h">
+    <ClInclude Include="Core\PasswordUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomUI\Separator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Time.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Content.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\DirectMessage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Comment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Post.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Like.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Account.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Person.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Job.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Skill.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Company.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Layers\CommentUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Layers\Network.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Layers\JobsUser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Layers\JobsCompany.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -132,6 +204,24 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="CustomUI\TitledButton.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Layers\HomeLayer.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Layers\PostUI.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Layers\NetworkUser.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Layers\NetworkCompany.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CustomUI\TreeNode.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

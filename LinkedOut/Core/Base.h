@@ -131,7 +131,34 @@ namespace LinkedOut {
         std::string PlaceOfEducation;
     };
 
+    struct PostSpecification {
 
+        int32_t PostID;
+        std::string Username;
+        std::string Timestamp;
+        std::string TextContent;
+
+        bool NeedsFollowing;
+        bool Liked;
+        bool Reposted;
+        
+        uint32_t LikeCount;
+        uint32_t RepostCount;
+
+
+        PostSpecification(int32_t postID,const std::string& Username, const std::string& Timestamp, const std::string& TextContent, bool NeedsFollowing, bool Liked, bool Reposted, const uint32_t& LikeCount, const uint32_t& RepostCount)
+            : PostID(postID),Username(Username), Timestamp(Timestamp), TextContent(TextContent), NeedsFollowing(NeedsFollowing), Liked(Liked), Reposted(Reposted), LikeCount(LikeCount), RepostCount(RepostCount)
+        {
+        }
+    };
+
+
+    struct CommentSpecification {
+        int32_t PostID;
+        std::string Username;
+        std::string Timestamp;
+        std::string TextContent;
+    };
 
     enum class SignupErrorCodes {
         None,

@@ -50,7 +50,7 @@ namespace LinkedOut {
 		//Main frame
 		{
 			m_MainFrame = new QFrame(m_MainLayer->m_WindowCentralWidget);
-			m_MainFrame->setObjectName(QString::fromUtf8("MainFrame"));
+			m_MainFrame->setObjectName(QString::fromUtf8("UserInformation_MainFrame"));
 			m_MainFrame->setGeometry(QRect(0, 0, 1280, 720));
 			m_MainFrame->setSizeIncrement(QSize(0, 0));
 			m_MainFrame->setStyleSheet(QString::fromUtf8("background-color:rgb(51,52,54);color:white;width:inherited;"));
