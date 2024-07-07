@@ -31,6 +31,9 @@ namespace LinkedOut {
 		void SetFirstName(const std::string& FirstName){ m_FirstName = FirstName;}
 		void SetLastName(const std::string& LastName){ m_LastName = LastName;}
 		void SetSkills(const std::vector<std::string>& Skills) { m_Skills = Skills; }
+
+		void Follow(const std::string& id);
+
 		void Serialize(QWidget* parent);
 
 	private:

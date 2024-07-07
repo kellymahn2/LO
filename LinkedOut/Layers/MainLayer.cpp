@@ -119,10 +119,11 @@ namespace LinkedOut {
 		if (m_IDToPersonMap.find(id) != m_IDToPersonMap.end())
 			return m_IDToPersonMap.at(id);
 		else {
+			Ref<Person> person = CreateRef<Person>();
+			m_IDToPersonMap[id] = person;
+			QueryPerson(id, person);
 
-			//TODO: implement.
-
-			return {};
+			return person;
 		}
 		return {};
 	}
@@ -132,10 +133,11 @@ namespace LinkedOut {
 		if (m_IDToCompanyMap.find(id) != m_IDToCompanyMap.end())
 			return m_IDToCompanyMap.at(id);
 		else {
+			Ref<Company> company = CreateRef<Company>();
+			m_IDToCompanyMap[id] = company;
+			QueryCompany(id, company);
 
-			//TODO: implement.
-
-			return {};
+			return company;
 		}
 		return {};
 	}
@@ -145,10 +147,11 @@ namespace LinkedOut {
 		if (m_IDToJobMap.find(id) != m_IDToJobMap.end())
 			return m_IDToJobMap.at(id);
 		else {
+			Ref<Job> job = CreateRef<Job>();
+			m_IDToJobMap[id] = job;
+			QueryJob(id, job);
 
-			//TODO: implement.
-
-			return {};
+			return job;
 		}
 		return {};
 	}
@@ -158,43 +161,269 @@ namespace LinkedOut {
 		if (m_IDToPostMap.find(id) != m_IDToPostMap.end())
 			return m_IDToPostMap.at(id);
 		else {
+			Ref<Post> post= CreateRef<Post>();
+			m_IDToPostMap[id] = post;
+			QueryPost(id, post);
 
-			//TODO: implement.
-
-			return {};
+			return post;
 		}
 		return {};
 	}
 
+	Ref<Person> MainLayer::QueryPerson(const std::string& id,Ref<Person> person)
+	{
+		auto db = Application::Get()->GetDatabase();
+
+		person->SetAccountID(id);
+
+		std::string queryPerson = fmt::format("SELECT * FROM Account a JOIN Person p ON a.account_id = p.account_id WHERE a.account_id = {}", id);
+		auto results = db->ExecuteAndReturn(queryPerson);
+		assert(results.size() == 1);
+
+		auto& personDet = results[0];
+
+		std::string phone_number = personDet.value("phone_number").toString().toStdString();
+		person->SetPhoneNumber(phone_number);
+		std::string user_name = personDet.value("user_name").toString().toStdString();
+		person->SetUsername(user_name);
+		std::string password = personDet.value("password").toString().toStdString();
+		person->SetPassword(password);
+		std::string email = personDet.value("email").toString().toStdString();
+		person->SetEmail(email);
+		std::string image_path = personDet.value("image_path").toString().toStdString();
+		
+		std::string first_name = personDet.value("first_name").toString().toStdString();
+		person->SetFirstName(first_name);
+		std::string last_name = personDet.value("last_name").toString().toStdString();
+		person->SetLastName(last_name);
+
+		{
+			std::string querySkills = fmt::format("SELECT * FROM PersonSkills WHERE (person_id = {})", id);
+			auto skills = db->ExecuteAndReturn(querySkills);
+			std::vector<std::string> personSkills;
+			for (auto& skill : skills) {
+				personSkills.push_back(skill.value("skill_tag").toString().toStdString());
+			}
+			person->SetSkills(personSkills);
+		}
+
+		{
+			std::string queryFollowing = fmt::format("SELECT * FROM Following WHERE (follower_id = {});", id);
+			auto followings = db->ExecuteAndReturn(queryFollowing);
+
+			std::vector<std::string> followingIDs;
+			for (auto& id : followings) {
+				followingIDs.push_back(id.value("following_id").toString().toStdString());
+			}
+			person->SetFollowingID(followingIDs);
+		}
+
+		{
+			std::string queryPosts = fmt::format("SELECT post_id FROM Post Where (sender_id = {});", id);
+			auto posts = db->ExecuteAndReturn(queryPosts);
+
+			std::vector<Ref<Post>> userPosts;
+
+			for (auto& post : posts) {
+				userPosts.push_back(GetPost(post.value("post_id").toString().toStdString()));
+			}
+			person->SetPosts(userPosts);
+		}
+
+		//TODO: implement DMs.
+
+		return person;
+	}
+
+	Ref<Company> MainLayer::QueryCompany(const std::string& id,Ref<Company> company)
+	{
+		auto db = Application::Get()->GetDatabase();
+		std::string queryCompany = fmt::format("SELECT * FROM Account a JOIN Company c ON a.account_id = c.account_id WHERE a.account_id = {}", id);
+
+		auto results = db->ExecuteAndReturn(queryCompany);
+		assert(results.size() == 1);
+
+		auto& companyDet = results[0];
+
+		std::string phone_number = companyDet.value("phone_number").toString().toStdString();
+		company->SetPhoneNumber(phone_number);
+		std::string user_name = companyDet.value("user_name").toString().toStdString();
+		company->SetUsername(user_name);
+		std::string password = companyDet.value("password").toString().toStdString();
+		company->SetPassword(password);
+		std::string email = companyDet.value("email").toString().toStdString();
+		company->SetEmail(email);
+		std::string image_path = companyDet.value("image_path").toString().toStdString();
+
+		std::string company_name = companyDet.value("company_name").toString().toStdString();
+		company->SetCompanyName(company_name);
+
+
+		std::string queryJobs = fmt::format("SELECT job_id FROM CompanyJobs WHERE (company_id = {});", id);
+		auto jobs = db->ExecuteAndReturn(queryJobs);
+
+		std::vector<Ref<Job>> companyJobs;
+
+		for (auto& job : jobs) {
+			companyJobs.push_back(GetJob(job.value("job_id").toString().toStdString()));
+		}
+		company->SetPostedJobs(companyJobs);
+
+		std::string queryEmployees = fmt::format("SELECT employee_id FROM CompanyEmployees WHERE (company_id = {});", id);
+		auto employees = db->ExecuteAndReturn(queryEmployees);
+
+		std::vector<Ref<Person>> companyEmployees;
+
+		for (auto& employee : employees) {
+			companyEmployees.push_back(GetPerson(employee.value("employee_id").toString().toStdString()));
+		}
+		company->SetEmployees(companyEmployees);
+		return company;
+	}
+
+	Ref<Job> MainLayer::QueryJob(const std::string& id,Ref<Job> job)
+	{
+		auto db = Application::Get()->GetDatabase();
+		
+		std::string queryJob = fmt::format("SELECT * FROM Job WHERE (job_id = {});", id);
+		auto _rows = db->ExecuteAndReturn(queryJob);
+
+		assert(_rows.size() == 1);
+		auto& row = _rows[0];
+
+		int salary = row.value("salary").toInt(); 
+		job->SetSalary(salary);
+		std::string job_name = row.value("job_name").toString().toStdString(); 
+		job->SetJobName(job_name);
+		std::string company_name = row.value("company_name").toString().toStdString(); 
+		job->SetCompanyName(company_name);
+		WorkspaceType workspace_type = (WorkspaceType)row.value("workspace_type").toInt();
+		job->SetWorkspaceType(workspace_type);
+		std::string location = row.value("location").toString().toStdString(); 
+		job->SetLocation(location);
+		JobType job_type = (JobType)row.value("job_type").toInt();
+		job->SetJobType(job_type);
+
+		std::string querySkills = fmt::format("SELECT * FROM JobSkills WHERE (job_id = {});", id);
+		auto skills = db->ExecuteAndReturn(querySkills);
+
+		std::vector<std::string> requiredSkills;
+
+		for (auto& skill : skills) {
+			requiredSkills.push_back(skill.value("skill_tag").toString().toStdString());
+		}
+		job->SetRequiredSkills(requiredSkills);
+		return job;
+	}
+
+	Ref<Post> MainLayer::QueryPost(const std::string& id, Ref<Post> post)
+	{
+		auto db = Application::Get()->GetDatabase();
+
+		post->SetPostID(id);
+
+		std::string queryPost = fmt::format(R"(
+			SELECT * FROM Post WHERE (post_id = {});
+		)",id);
+
+		auto results = db->ExecuteAndReturn(queryPost);
+
+		assert(results.size() == 1);
+		auto& postDet = results[0];
+
+		std::string poster_name = postDet.value("poster_name").toString().toStdString();
+		post->SetPosterName(poster_name);
+		std::string sender_id = postDet.value("sender_id").toString().toStdString();
+		post->SetSenderID(sender_id);
+		std::string time_sent = postDet.value("time_sent").toString().toStdString();
+		{
+			Time t;
+			t.ExtractFromTimestamp(time_sent);
+			post->SetTimeSent(t);
+		}
+		std::string content_text = postDet.value("content_text").toString().toStdString();
+		post->SetContentText(content_text);
+		std::string content_picture = postDet.value("content_picture").toString().toStdString();
+		post->SetContentPicture(content_picture);
+		std::string content_video = postDet.value("content_video").toString().toStdString();
+		post->SetContentVideo(content_video);
+		int repost_counter = postDet.value("repost_counter").toInt();
+		post->SetRepostCounter(repost_counter);
+		
+
+		std::string queryLikes = fmt::format("SELECT * FROM Like WHERE (post_id = {}) ORDER BY liked_at", id);
+		auto likes = db->ExecuteAndReturn(queryLikes);
+
+		std::vector<Like> postLikes;
+
+		for (auto& like : likes) {
+			Like l;
+			l.SetLikedBy(like.value("liked_by").toString().toStdString());
+			l.SetLikeID(like.value("like_id").toString().toStdString());
+			Time t;
+			t.ExtractFromTimestamp(like.value("liked_at").toString().toStdString());
+			l.SetLikedAt(t);
+			postLikes.push_back(l);
+		}
+
+		post->SetLikes(postLikes);
+
+		std::string queryComments = fmt::format("SELECT * FROM Comment WHERE (post_id = {});", id);
+		auto comments = db->ExecuteAndReturn(queryComments);
+
+		std::vector<Ref<Comment>> postComments;
+
+		for (auto& comment : comments) {
+			Ref<Comment> c = CreateRef<Comment>();
+			c->SetCommentID(comment.value("comment_id").toString().toStdString());
+			c->SetPostID(id);
+			c->SetSenderID(comment.value("sender_id").toString().toStdString());
+			Time t;
+			t.ExtractFromTimestamp(comment.value("time_sent").toString().toStdString());
+			c->SetTimeSent(t);
+			c->SetContentText(comment.value("content_text").toString().toStdString());
+			c->SetContentPicture(comment.value("content_picture").toString().toStdString());
+			c->SetContentVideo(comment.value("content_video").toString().toStdString());
+			c->SetCommenterName(comment.value("commenter_name").toString().toStdString());
+			postComments.push_back(c);
+		}
+		post->SetComments(postComments);
+		return post;
+	}
+
 	void MainLayer::LikePost(Ref<Post> post)
 	{
+		if (std::find_if(post->GetLikes().begin(), post->GetLikes().end(), [this,post](const Like& like) {
+			return like.GetLikedBy() == m_CurrentUser->GetAccountID();
+			}) != post->GetLikes().end()) {
+			return;
+		}
 		auto db = Application::Get()->GetDatabase();
 
 		{
 			std::string cmd = fmt::format("INSERT INTO Like(liked_by,post_id) VALUES({},{});",m_CurrentUser->GetAccountID(),post->GetPostID());
 			if (!db->Execute(cmd))
 				return;
-
-
+			db->Commit();
 		}
 		Like like;
 
 		{
-			std::string cmd = fmt::format("SELECT (like_id,liked_at) FROM Like WHERE (liked_by = {} AND post_id = {});",m_CurrentUser->GetAccountID(),post->GetPostID());
+			std::string cmd = fmt::format("SELECT * FROM Like WHERE (liked_by = {} AND post_id = {});",m_CurrentUser->GetAccountID(),post->GetPostID());
 			auto res = db->ExecuteAndReturn(cmd);
 			assert(res.size() == 1);
 
 			auto& record = res[0];
 
-			std::string like_id = std::to_string(record.field("like_id").value().toInt());
-			std::string liked_at = record.field("liked_at").value().toString().toStdString();
+			std::string like_id = std::to_string(record.value("like_id").toInt());
+			std::string liked_at = record.value("liked_at").toString().toStdString();
 			
 			Time time;
 			time.ExtractFromTimestamp(liked_at);
 
 			like.SetLikeID(like_id);
 			like.SetLikedAt(time);
-			like.SetLikedBy(post->GetPostID());
+			like.SetLikedBy(m_CurrentUser->GetAccountID());
 		}
 
 		post->LikePost(like);
@@ -202,6 +431,53 @@ namespace LinkedOut {
 
 	void MainLayer::RepostPost(Ref<Post> post)
 	{
+	}
+
+	void MainLayer::CommentOnPost(Ref<Post> post,const std::string& text,const std::string& picture,const std::string& video)
+	{
+		auto db = Application::Get()->GetDatabase();
+		{
+			std::string cmd = fmt::format("INSERT INTO Comment (post_id,sender_id,content_text,content_picture,content_video,commenter_name) VALUES({},{},'{}','{}','{}','{}');",
+											post->GetPostID(), m_CurrentUser->GetAccountID(), text,
+											picture, video, m_CurrentUser->GetUsername());
+			if (!db->Execute(cmd))
+				return;
+			db->Commit();
+		}
+
+		Ref<Comment> c = CreateRef<Comment>();
+
+		{
+			std::string cmd = fmt::format("SELECT comment_id,time_sent FROM Comment WHERE comment_id = last_insert_rowid()");
+			auto res = db->ExecuteAndReturn(cmd);
+			assert(res.size() == 1);
+			auto& rec = res[0];
+
+			std::string comment_id = rec.value("comment_id").toString().toStdString();
+			std::string time_sent = rec.value("time_sent").toString().toStdString();
+			c->SetCommenterName(m_CurrentUser->GetUsername());
+			c->SetCommentID(comment_id);
+			Time t;
+			t.ExtractFromTimestamp(time_sent);
+			c->SetTimeSent(t);
+			c->SetContentText(text);
+			c->SetContentPicture(picture);
+			c->SetContentVideo(video);
+			c->SetPostID(post->GetPostID());
+			c->SetSenderID(m_CurrentUser->GetAccountID());
+		}
+		post->CommentOnPost(c);
+	}
+
+	void MainLayer::Follow(const std::string& id)
+	{
+		if (m_CurrentUser->GetAccountID() == id)
+			return;
+		m_CurrentUser->Follow(id);
+
+		auto db = Application::Get()->GetDatabase();
+		std::string insertFollowing = fmt::format("INSERT INTO FOLLOWING(follower_id,following_id) VALUES ({},{});", m_CurrentUser->GetAccountID(), id);
+		db->Execute(insertFollowing);
 	}
 
 	std::vector<Ref<Person>> MainLayer::GetUserSuggestions(Ref<Person> person)
@@ -295,8 +571,8 @@ namespace LinkedOut {
         SELECT p.post_id
         FROM Post p
         JOIN Following f ON p.sender_id = f.following_id
-        WHERE f.follower_id = {}
-		)", person->GetAccountID());
+        WHERE f.follower_id = {} AND p.post_id != {}
+		)", person->GetAccountID(),person->GetAccountID());
 
 		auto results = db->ExecuteAndReturn(queryPostsFromFollowed);
 
@@ -316,8 +592,8 @@ namespace LinkedOut {
         FROM Post p
         JOIN CompanyEmployees ce ON p.sender_id = ce.employee_id
         JOIN CompanyEmployees userCe ON userCe.employee_id = {}
-        WHERE ce.company_id = userCe.company_id
-		)", person->GetAccountID());
+        WHERE ce.company_id = userCe.company_id AND p.sender_id != {}
+		)", person->GetAccountID(),person->GetAccountID());
 
 		auto results = db->ExecuteAndReturn(queryPostsFromCompany);
 
@@ -383,22 +659,6 @@ namespace LinkedOut {
 			m_SignupLayer->CleanupInputs();
 	}
 
-	// Function to create a custom widget with a button
-	QWidget* createButtonWidget(const QString& buttonText, const QString& message) {
-		QWidget* widget = new QWidget();
-		QVBoxLayout* layout = new QVBoxLayout(widget);
-		QPushButton* button = new QPushButton(buttonText, widget);
-
-		widget->setAutoFillBackground(true);
-		// Connect the button's clicked signal to a lambda function that prints the message
-		QObject::connect(button, &QPushButton::clicked, [message]() {
-			std::cout << message.toStdString() << std::endl;
-			});
-
-		layout->addWidget(button);
-		widget->setLayout(layout);
-		return widget;
-	}
 
 #define TEST 0
 
@@ -437,7 +697,7 @@ namespace LinkedOut {
 		m_HomeLayer = new HomeLayer(this);
 		m_HomeLayer->Hide();
 
-		{
+		/*{
 
 			Ref<Comment> c = CreateRef<Comment>();
 
@@ -457,7 +717,7 @@ namespace LinkedOut {
 			p->SetComments({ c });
 			m_HomeLayer->AddPost(p);
 			m_HomeLayer->ShowMore(10);
-		}
+		}*/
 
 		{
 			std::string buttonOnStyle = 
@@ -510,9 +770,14 @@ namespace LinkedOut {
 		if (!m_UserData.IsValid()) {
 			SetCurrentLayer(m_SplashLayer);
 		}*/
+		UserInternalData d;
+		d.Username = "john_doe";
+		d.Password = "password123";
+		Login(d, false);
 
 		SetCurrentLayer(m_HomeLayer);
 
+		
 		m_LayersWidget->setLayout(m_LayersLayout);
 
 		m_WindowCentralLayout->addWidget(m_LayersWidget);

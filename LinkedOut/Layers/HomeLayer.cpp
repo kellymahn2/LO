@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QScrollArea>
 #include <QMainWindow>
+#include <QBoxLayout>
 
 namespace LinkedOut {
 	HomeLayer::HomeLayer(MainLayer* mainLayer)
@@ -22,7 +23,23 @@ namespace LinkedOut {
 	void HomeLayer::Show()
 	{
 		m_MainFrame->show();
-		MainLayer::Get().GetUserPosts();
+		m_PostsLayout->ClearPosts();
+
+		Ref<Person> p = std::dynamic_pointer_cast<Person>(MainLayer::Get().m_CurrentUser);
+		auto posts = MainLayer::Get().GetSuggestedUserPosts(p);
+
+		for (auto& post : posts.FollowingPosts) {
+			m_PostsLayout->AddPost(post);
+		}
+		
+		for (auto& post : posts.SuggestedPosts) {
+			m_PostsLayout->AddSuggestedPost(post);
+		}
+
+		for (auto& post : posts.RandomPosts) {
+			m_PostsLayout->AddSuggestedPost(post);
+		}
+		ShowMore(10);
 	}
 	void HomeLayer::Hide()
 	{
@@ -54,11 +71,14 @@ namespace LinkedOut {
 			ShowComments(post);
 		}, m_MainFrame);
 
-		m_CommentsLayer = new CommentsLayer(m_MainFrame);
+		m_CommentWindow = new PopupWindow(640, 480, m_MainFrame, PopupWindowFlagBit_Popup);
+		m_CommentWindowLayout = new QVBoxLayout(m_CommentWindow);
+		m_CommentWindow->setLayout(m_CommentWindowLayout);
+
+		m_CommentsLayer = new CommentsLayer(m_CommentWindow);
+		m_CommentWindowLayout->addWidget(m_CommentsLayer);
 
 		m_MainFrameLayout->addWidget(m_PostsLayout);
-		m_MainFrameLayout->addWidget(m_CommentsLayer);
-		m_CommentsLayer->hide();
 
 		m_MainFrame->setLayout(m_MainFrameLayout);
 		
@@ -66,8 +86,52 @@ namespace LinkedOut {
 	}
 	void HomeLayer::ShowComments(Ref<Post> post)
 	{
-		m_PostsLayout->hide();
 		m_CommentsLayer->SetPost(post);
-		m_CommentsLayer->show();
+		m_CommentWindow->show();
+	}
+	void PostsLayer::SetFollowingPosts(const std::vector<Ref<Post>>& posts)
+	{
+	}
+	void PostsLayer::SetSuggestedPosts(const std::vector<Ref<Post>>& posts)
+	{
+	}
+	void PostsLayer::SetRandomPosts(const std::vector<Ref<Post>>& posts)
+	{
+	}
+	void CommentsLayer::AddNewCommentUI(QWidget* parent)
+	{
+		QVBoxLayout* mainDiv = (parent->layout() ? (QVBoxLayout*)parent->layout() : new QVBoxLayout(parent));
+		QTextEdit* edit;
+		{
+			std::string style = "border:1px dashed black;background-color:rgb(86, 152, 144);";
+			edit = new QTextEdit(parent);
+			edit->setStyleSheet(QString::fromStdString(style));
+			mainDiv->addWidget(edit);
+			edit->setPlaceholderText("Post content");
+		}
+		
+			
+			
+		{
+			std::string style = "border:none;background-color:rgb(86, 152, 144);";
+			HDivision* bottomDiv = new HDivision(parent);
+			bottomDiv->Widget->setStyleSheet("border:none;");
+			auto imageButton = new QPushButton("Image", parent);
+			imageButton->setStyleSheet(QString::fromStdString(style));
+			bottomDiv->Layout->addWidget(imageButton);
+			bottomDiv->Layout->addStretch();
+			auto postButton = new QPushButton("Post", parent);
+			postButton->setStyleSheet(QString::fromStdString(style));
+			bottomDiv->Layout->addWidget(postButton);
+			mainDiv->addWidget(bottomDiv->Widget);
+
+			QObject::connect(postButton, &QPushButton::clicked, [=]() {
+				MainLayer::Get().CommentOnPost(m_Post, edit->document()->toPlainText().toStdString(),"","");
+			});
+		}
+			
+
+		mainDiv->setContentsMargins(10, 5, 10, 5);
+		parent->setLayout(mainDiv);
 	}
 }

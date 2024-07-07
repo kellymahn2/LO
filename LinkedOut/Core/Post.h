@@ -1,8 +1,11 @@
 #pragma once
+#include "Core/Base.h"
 #include "Content.h"
 #include "Like.h"
 #include "Comment.h"
 #include <vector>
+
+class QWidget;
 
 namespace LinkedOut {
 	class Post : public Content {
@@ -25,10 +28,16 @@ namespace LinkedOut {
 			m_Likes.push_back(like);
 		}
 
+		void Serialize(QWidget* parent);
+		void CommentOnPost(Ref<Comment> comment)
+		{
+			m_Comments.push_back(comment);
+		}
+
 	private:
 		std::string m_PosterName;
 		std::string m_PostID;
-		uint32_t m_RepostCounter;
+		uint32_t m_RepostCounter = 0;
 		std::vector<Like> m_Likes;
 		std::vector<Ref<Comment>> m_Comments;
 	};

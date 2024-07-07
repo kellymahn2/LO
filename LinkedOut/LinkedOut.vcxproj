@@ -110,6 +110,7 @@
     <ClCompile Include="Core\Job.cpp" />
     <ClCompile Include="Core\PasswordUtils.cpp" />
     <ClCompile Include="Core\Person.cpp" />
+    <ClCompile Include="Core\Post.cpp" />
     <ClCompile Include="Core\Window.cpp" />
     <ClCompile Include="Layers\CommentUI.cpp" />
     <ClCompile Include="Layers\ErrorLayer.cpp" />

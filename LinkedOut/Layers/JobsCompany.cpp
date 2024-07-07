@@ -26,8 +26,6 @@ namespace LinkedOut {
 		return "";
 	}
 
-
-
 	void JobsCompany::Show()
 	{
 	}

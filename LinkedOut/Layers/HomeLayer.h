@@ -50,22 +50,11 @@ namespace LinkedOut {
 			m_ScrollArea->setWidget(m_ScrollWidget);
 
 			QVBoxLayout* scrollLayout = new QVBoxLayout(m_ScrollWidget);
-			//scrollLayout->addStretch(0);  // Ensure items are stacked from top to bottom
 			scrollLayout->setDirection(QBoxLayout::TopToBottom);
 
-			//m_LoadMoreLabel = new ClickableLabel(m_ScrollWidget);
-			//m_LoadMoreLabel->setText("Load more posts");
-			//m_LoadMoreLabel->setStyleSheet(
-			//	"QLabel{color:rgb(0,0,238);}"
-			//	"QLabel:hover{color:rgb(23,24,214);}");
-			//
-			//QObject::connect(m_LoadMoreLabel, &ClickableLabel::clicked, [this]() {
-			//	ShowMore(10);
-			//	});
-			/*scrollLayout->addWidget(m_LoadMoreLabel);
-			scrollLayout->addStretch();*/
 
 			m_MainLayout->addWidget(m_ScrollArea);
+			setLayout(m_MainLayout);
 		}
 
 		void SetPost(Ref<Post> post)
@@ -90,6 +79,16 @@ namespace LinkedOut {
 
 		void CreateCommentUIs() {
 			QVBoxLayout* scrollLayout = qobject_cast<QVBoxLayout*>(m_ScrollWidget->layout());
+			{
+				QWidget* w = new QWidget(m_ScrollWidget);
+				w->setLayout(new QVBoxLayout(w));
+				w->setStyleSheet("background-color:rgb(86, 152, 144);");
+				m_Post->Serialize(w);
+				if (scrollLayout) {
+					scrollLayout->addWidget(w);
+				}
+			}
+			AddNewCommentUI(m_ScrollWidget);
 			for (auto& comment : m_Post->GetComments()) {
 				CommentUI* commentUI = new CommentUI(comment, m_ScrollWidget);
 
@@ -97,9 +96,14 @@ namespace LinkedOut {
 					scrollLayout->addWidget(commentUI);
 				}
 			}
+
+			
+
 			if(scrollLayout)
 				scrollLayout->addStretch();
 		}
+
+		void AddNewCommentUI(QWidget* parent);
 
 	private:
 		QVBoxLayout* m_MainLayout;
@@ -107,7 +111,7 @@ namespace LinkedOut {
 		ClickableLabel* m_LoadMoreLabel;
 		QWidget* m_ScrollWidget;
 		Ref<Post> m_Post;
-		uint32_t m_CurrentShown = 0;
+
 	};
 
 
@@ -157,6 +161,13 @@ namespace LinkedOut {
 
 			m_MainLayout->addWidget(m_ScrollArea);
 		}
+
+		void SetFollowingPosts(const std::vector<Ref<Post>>& posts);
+
+		void SetSuggestedPosts(const std::vector<Ref<Post>>& posts);
+
+		void SetRandomPosts(const std::vector<Ref<Post>>& posts);
+
 		void AddPost(Ref<Post> post) {
 		   m_Posts.push_back(post);
 			
@@ -177,8 +188,12 @@ namespace LinkedOut {
 		   }*/
 		}
 
+		void AddSuggestedPost(Ref<Post> post) {
+			m_SuggestedPosts.push_back(post);
+		}
+
 		void ShowMore(uint32_t amount) {
-			uint32_t shouldShow = std::min(m_CurrentShown + amount, (uint32_t)m_Posts.size());
+			uint32_t shouldShow = std::min(m_CurrentShown + amount, (uint32_t)m_Posts.size() + (uint32_t)m_SuggestedPosts.size());
 			
 			{
 				QVBoxLayout* scrollLayout = qobject_cast<QVBoxLayout*>(m_ScrollWidget->layout());
@@ -189,29 +204,46 @@ namespace LinkedOut {
 				scrollLayout->removeItem(item);
 			}
 			
+			uint32_t currentShown = m_CurrentShown;
 
-			for (uint32_t i = m_CurrentShown; i < shouldShow; ++i) {
-				PostUI* post = new PostUI(m_Posts[i], std::forward<decltype(m_CommentsCallback)>(m_CommentsCallback), m_ScrollWidget);
-				QVBoxLayout* scrollLayout = qobject_cast<QVBoxLayout*>(m_ScrollWidget->layout());
+			QVBoxLayout* scrollLayout = qobject_cast<QVBoxLayout*>(m_ScrollWidget->layout());
+
+			//Show normal posts
+			for (; currentShown < std::min(shouldShow,(uint32_t)m_Posts.size()); ++currentShown) {
+				PostUI* post = new PostUI(m_Posts[currentShown],false, std::forward<decltype(m_CommentsCallback)>(m_CommentsCallback), m_ScrollWidget);
 				
 				if (scrollLayout) {
 					scrollLayout->addWidget(post);
 				}
 			}
 
+			//Show suggested posts
+			for (uint32_t i = currentShown; i < shouldShow;++i) {
+				if (i == currentShown) {
+					QLabel* label = new QLabel("Suggested posts", m_ScrollWidget);
+					if (scrollLayout) {
+						scrollLayout->addWidget(label);
+					}
+				}
+				PostUI* post = new PostUI(m_SuggestedPosts[i - m_Posts.size()],true, std::forward<decltype(m_CommentsCallback)>(m_CommentsCallback), m_ScrollWidget);
+
+				if (scrollLayout) {
+					scrollLayout->addWidget(post);
+				}
+			}
 
 			{
 				QVBoxLayout* scrollLayout = qobject_cast<QVBoxLayout*>(m_ScrollWidget->layout());
 				scrollLayout->addWidget(m_LoadMoreLabel);
 				scrollLayout->addStretch();
 			}
-			
 
 			m_CurrentShown = shouldShow;
 		}
 
 		void ClearPosts() {
 			m_Posts.clear();
+			m_SuggestedPosts.clear();
 			// Remove all child widgets from the scroll widget
 			QLayoutItem* child;
 			QVBoxLayout* scrollLayout = qobject_cast<QVBoxLayout*>(m_ScrollWidget->layout());
@@ -221,11 +253,42 @@ namespace LinkedOut {
 					delete child;
 				}
 			}
+
+			m_LoadMoreLabel = new ClickableLabel(m_ScrollWidget);
+			m_LoadMoreLabel->setText("Load more posts");
+			m_LoadMoreLabel->setStyleSheet(
+				"QLabel{color:rgb(0,0,238);}"
+				"QLabel:hover{color:rgb(23,24,214);}");
+			QObject::connect(m_LoadMoreLabel, &ClickableLabel::clicked, [this]() {
+				ShowMore(10);
+				});
+
+			m_StartPostButton = new QPushButton(m_ScrollWidget);
+			m_StartPostButton->setText("Start a post");
+			m_StartPostButton->setStyleSheet("color:white;font-weight:bold;font-size:15px;background-color:rgb(86, 152, 144);border:2px solid white;border-radius:8px");
+			{
+				m_StartPostPopup = new PopupWindow(640, 480, this, PopupWindowFlagBit_Popup);
+
+				std::string popupStyleSheet = "border:3px solid green;background-color:rgb(86, 152, 144);";
+
+				m_StartPostPopup->setStyleSheet(QString::fromStdString(popupStyleSheet));
+				SetupPopup(m_StartPostPopup);
+				QObject::connect(m_StartPostButton, &QPushButton::clicked, [this]() {
+					m_StartPostPopup->show();
+					});
+			}
+
 			scrollLayout->addWidget(m_StartPostButton);
 			scrollLayout->addWidget(m_LoadMoreLabel);
 			scrollLayout->addStretch();
 			m_CurrentShown = 0;
 		}
+
+		QVBoxLayout* GetScrollLayout() {
+			QVBoxLayout* scrollLayout = qobject_cast<QVBoxLayout*>(m_ScrollWidget->layout());
+			return scrollLayout;
+		}
+
 	private:
 		void SetupPopup(QWidget* parent)
 		{
@@ -273,6 +336,7 @@ namespace LinkedOut {
 		QWidget* m_ScrollWidget;
 		
 		std::vector<Ref<Post>> m_Posts;
+		std::vector<Ref<Post>> m_SuggestedPosts;
 		uint32_t m_CurrentShown = 0;
 		std::function<void(Ref<Post>)> m_CommentsCallback;
 
@@ -312,6 +376,8 @@ namespace LinkedOut {
 		QFrame* m_MainFrame;
 		QHBoxLayout* m_MainFrameLayout;
 		PostsLayer* m_PostsLayout;
+		PopupWindow* m_CommentWindow;
+		QVBoxLayout* m_CommentWindowLayout;
 		CommentsLayer* m_CommentsLayer;
 	};
 }

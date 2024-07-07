@@ -68,7 +68,10 @@ namespace LinkedOut {
         const std::string& GetPassword() const{return m_Password;}
         void SetUsername(const std::string& Username){ m_Username = Username;}
         void SetPassword(const std::string& Password) { m_Password = Password; }
-	private:
+
+        virtual void Follow(const std::string& id) {}
+
+	protected:
         std::string m_Username;
         std::string m_Password;
 		std::string m_AccountID;

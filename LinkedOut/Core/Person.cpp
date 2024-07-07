@@ -4,6 +4,10 @@
 #include <QLayout>
 
 namespace LinkedOut {
+	void Person::Follow(const std::string& id)
+	{
+		m_FollowingID.push_back(id);
+	}
 	void Person::Serialize(QWidget* parent)
 	{
 		auto layout = parent->layout();

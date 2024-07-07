@@ -62,9 +62,15 @@ namespace LinkedOut {
 		Ref<Job> GetJob(const std::string& id);
 		Ref<Post> GetPost(const std::string& id);
 
+		Ref<Person> QueryPerson(const std::string& id, Ref<Person> person);
+		Ref<Company> QueryCompany(const std::string& id, Ref<Company> company);
+		Ref<Job> QueryJob(const std::string& id, Ref<Job> job);
+		Ref<Post> QueryPost(const std::string& id, Ref<Post> post);
 
 		void LikePost(Ref<Post> post);
 		void RepostPost(Ref<Post> post);
+		void CommentOnPost(Ref<Post> post, const std::string& text, const std::string& picture, const std::string& video);
+		void Follow(const std::string& id);
 
 		std::vector<Ref<Person>> GetUserSuggestions(Ref<Person> person);
 		std::vector<Ref<Person>> GetUserRequests(Ref<Person> person);
@@ -86,14 +92,11 @@ namespace LinkedOut {
 
 		void StoreUserDataLocally(const UserInternalData& userData);
 
-
 		bool UserExists(const std::string& username);
 		UserInternalData GetUserDataFromUsername(const std::string& userName);
 		UserData GetUserInformation(uint32_t userID);
 		uint32_t GetUniqueUserID(const std::string& userName);
 		void SetCurrentLayer(Layer* layer);
-
-
 	private:
 		UserInternalData m_UserData;
 
@@ -120,13 +123,9 @@ namespace LinkedOut {
 		std::unordered_map<std::string, Ref<Job>> m_IDToJobMap;
 		std::unordered_map<std::string, Ref<Post>> m_IDToPostMap;
 
-
 		Ref<Account> m_CurrentUser;
-
-
+		
 		static MainLayer* s_Instance;
-
-
 		friend class SignupLayer;
 		friend class LoginLayer;
 		friend class SplashLayer;
@@ -138,5 +137,7 @@ namespace LinkedOut {
 		friend class NetworkComany;
 		friend class JobsUser;
 		friend class JobsCompany;
+		friend class PostUI;
+		friend CommentsLayer;
 	};
 }
