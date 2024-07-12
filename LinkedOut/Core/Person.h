@@ -36,9 +36,30 @@ namespace LinkedOut {
 
 		void Serialize(QWidget* parent);
 
+		virtual AccountType GetAccountType()const { return AccountType::Person; }
+		virtual HomeLayerUI* MakeHomeLayer(QWidget* parent) override;
+		virtual MessagePanelUI* MakeMessagePanel(QWidget* parent) override;
+
+		void SetJob(Ref<Job> job) { m_Job = job; }
+		Ref<Job> GetJob()const { return m_Job; }
+		// Inherited via Account
+		JobPanelUI* MakeJobLayer(QWidget* parent) override;
+
+		// Inherited via Account
+		NetworkPanelUI* MakeNetworkLayer(QWidget* parent) override;
+
+		// Inherited via Account
+		ProfilePanelUI* MakeProfilePanelUI(bool currentUser, QWidget* parent) override;
+		OtherProfilePanelUI* MakeOtherProfilePanelUI(QWidget* parent) override;
+
+
+		// Inherited via Account
+		LoginLayerUI* MakeLoginUI(QWidget* parent) override;
+		SignupLayerUI* MakeSignupUI(QWidget* parent) override;
 	private:
 		std::string m_FirstName;
 		std::string m_LastName;
 		std::vector<std::string> m_Skills;
+		Ref<Job> m_Job;
 	};
 }

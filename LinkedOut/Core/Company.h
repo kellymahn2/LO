@@ -36,9 +36,40 @@ namespace LinkedOut {
             m_Employees = employees;
         }
 
+        virtual AccountType GetAccountType()const { return AccountType::Company; }
+
+        HomeLayerUI* MakeHomeLayer(QWidget* parent) override;
+        JobPanelUI* MakeJobLayer(QWidget* parent) override;
+        LoginLayerUI* MakeLoginUI(QWidget* parent) override;
+        SignupLayerUI* MakeSignupUI(QWidget* parent) override;
+
+        virtual void Serialize(QWidget* parent) override;
+
+
+        void AddEmployee(Ref<Person> person) {
+            m_Employees.push_back(person);
+        }
+
+        void RemoveJob(Ref<Job> job) {
+            auto mainIt = std::find(m_PostedJobs.begin(), m_PostedJobs.end(), job);
+            if (mainIt == m_PostedJobs.end())
+                return;
+            m_PostedJobs.erase(mainIt);
+        }
+
+
+
 	private:
 		std::vector<Ref<Job>> m_PostedJobs;
 		std::string m_CompanyName;
 		std::vector<Ref<Person>> m_Employees;
-	};
+
+        // Inherited via Account
+        NetworkPanelUI* MakeNetworkLayer(QWidget* parent) override;
+
+        // Inherited via Account
+        ProfilePanelUI* MakeProfilePanelUI(bool currentUser, QWidget* parent) override;
+        OtherProfilePanelUI* MakeOtherProfilePanelUI(QWidget* parent) override;
+        MessagePanelUI* MakeMessagePanel(QWidget* parent)override;
+    };
 }

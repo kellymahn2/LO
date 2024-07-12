@@ -129,6 +129,5 @@ namespace LinkedOut {
 		ClickableLabel* m_ContentLabel;
 
 		QVBoxLayout* m_MainLayout;
-
 	};
 }

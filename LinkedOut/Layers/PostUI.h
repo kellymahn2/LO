@@ -40,10 +40,7 @@ namespace LinkedOut {
 			return shortenedText + seeMoreText;
 		}
 	private:
-
-
 		const uint32_t m_ButtonSize = 30;
-
 
 		HDivision m_HeaderDiv;
 		VDivision m_UsernameDiv;
@@ -65,5 +62,6 @@ namespace LinkedOut {
 		TitledButton* m_SendButton;
 		QVBoxLayout* m_MainLayout;
 		PopupWindow* m_CommentSectionWindow;
+		Ref<Post> m_Post;
 	};
 }

@@ -2,6 +2,9 @@
 
 #include "MainLayer.h"
 
+#include <QApplication>
+#include <QClipboard>
+
 namespace LinkedOut {
 	PostUI::PostUI(Ref<Post> post, bool needsFollowing, std::function<void(Ref<Post>)>&& commentsCallback, QWidget* parent)
 		: QFrame(parent),
@@ -19,7 +22,7 @@ namespace LinkedOut {
 		m_CommentButton(new TitledButton(QIcon("Resources/CommentIcon.png"), m_ButtonSize, m_ButtonSize, 0, "Comment", this)),
 		m_RepostButton(new TitledButton(QIcon("Resources/RepostIcon.png"), m_ButtonSize, m_ButtonSize, 0, "Repost", this)),
 		m_SendButton(new TitledButton(QIcon("Resources/SendIcon.png"), m_ButtonSize, m_ButtonSize, 0, "Send", this)),
-		m_MainLayout(new QVBoxLayout)
+		m_MainLayout(new QVBoxLayout),m_Post(post)
 	{
 
 		//Header
@@ -35,8 +38,14 @@ namespace LinkedOut {
 			m_FollowButton->setText("Follow");
 			m_FollowButton->setStyleSheet("color:aqua;");
 			m_HeaderDiv.Layout->addWidget(m_FollowButton);
-			QObject::connect(m_FollowButton, &ClickableLabel::clicked, [post]() {
-				MainLayer::Get().Follow(post->GetSenderID());
+			QObject::connect(m_FollowButton, &ClickableLabel::clicked, [this,post]() {
+				if (auto id = MainLayer::Get().CompanyAccountExists(post->GetPosterName());id != "") {
+					MainLayer::Get().Follow(MainLayer::Get().GetCurrentUser()->GetAccountID(), id);
+					m_FollowButton->deleteLater();
+				}
+				else if(auto id = MainLayer::Get().PersonAccountExists(post->GetPosterName());id != "") {
+					MainLayer::Get().RequestFollow(id);
+				}
 			});
 		}
 		m_HeaderDiv.Layout->setContentsMargins(0, 0, 0, 0);
@@ -44,10 +53,18 @@ namespace LinkedOut {
 		m_TopSeparator->setStyleSheet("background-color:rgb(100, 165, 155);");
 		m_MainLayout->addWidget(m_TopSeparator);
 
-
 		QString postText = ShortenText(QString::fromStdString(post->GetContentText()), 200, font());
 
 		m_ContentLabel->setText(postText);
+
+		if (!m_Post->GetContentPicture().empty()) {
+			QPixmap image(m_Post->GetContentPicture().c_str());
+			if (!image.isNull()) {
+				QLabel* imageLabel = new QLabel(m_ContentDiv.Widget);
+				imageLabel->setPixmap(image.scaled(QSize(100, 100), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+				m_ContentDiv.Layout->addWidget(imageLabel);
+			}
+		}
 
 		if (postText == QString::fromStdString(post->GetContentText())) {
 			m_ContentLabel->setCursor(Qt::ArrowCursor);
@@ -58,7 +75,7 @@ namespace LinkedOut {
 					m_ContentLabel->setText(QString::fromStdString(post->GetContentText()));
 				else
 					m_ContentLabel->setText(postText);
-				});
+			});
 		}
 
 		m_ContentDiv.Layout->addWidget(m_ContentLabel);
@@ -83,7 +100,6 @@ namespace LinkedOut {
 			});
 
 			m_ContentDiv.Layout->addWidget(m_WhoLikedThis);
-
 		}
 
 
@@ -107,10 +123,23 @@ namespace LinkedOut {
 
 		QObject::connect(m_CommentButton, &TitledButton::clicked, [commentsCallback, post]() {commentsCallback(post); });
 
-		QObject::connect(m_LikeButton, &TitledButton::clicked, [post,this]() {
+		QObject::connect(m_LikeButton, &TitledButton::clicked, [post, this]() {
+			QLayout* layout = m_WhoLikedThisWindow->layout();
 			MainLayer::Get().LikePost(post);
-			});
+			auto& like = post->GetLikes().back();
+			Ref<Person> p = MainLayer::Get().GetPerson(like.GetLikedBy());
+			auto& t = like.GetLikedAt();
+			layout->addWidget(new QLabel(QString::fromStdString(fmt::format("Liked by {} {}/{}/{} {}:{}", p->GetUsername(), t.GetYear(), t.GetMonth(), t.GetDay(), t.GetHour(), t.GetMinute())), m_WhoLikedThisWindow));
 
+		});
+
+		QObject::connect(m_RepostButton, &TitledButton::clicked,[post]() {
+			MainLayer::Get().RepostPost(post);
+		});
+
+		QObject::connect(m_SendButton, &TitledButton::clicked, [post, this]() {
+			QApplication::clipboard()->setText(QString::fromStdString(fmt::format("post_id:{}",post->GetPostID())));
+		});
 
 		m_MainLayout->addWidget(m_BottomDiv.Widget);
 

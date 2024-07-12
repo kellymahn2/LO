@@ -25,18 +25,12 @@ namespace LinkedOut {
 
 		void Cleanup();
 		virtual void* GetMainFrame()const override {
-			return m_MainFrame;
+			return nullptr;
 		}
 	private:
 		MainLayer* m_MainLayer;
 
-
-		QFrame* m_MainFrame;
-		QFrame* m_Frame;
-		QLabel* m_SplashWelcomeText;
-		QLabel* m_SplashWelcomeImage;
-		QPushButton* m_SplashSignUpButton;
-		QPushButton* m_SplashLoginButton;
+		QWidget* m_MainWidget = nullptr;
 
 
 		bool m_IsShowing = false;

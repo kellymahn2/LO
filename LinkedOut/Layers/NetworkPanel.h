@@ -1,15 +1,12 @@
 #pragma once
-
-
 #include "NavPanel.h"
-#include "CustomUI/Division.h"
+#include "CustomUI/Division.h"	
 #include "CustomUI/Separator.h"
 #include "CustomUI/ClickableLabel.h"
 #include "CustomUI/TitledButton.h"
 #include "CustomUI/PopupWindow.h"
 
 #include "Core/Account.h"
-
 
 #include "Core/Post.h"
 #include "PostUI.h"
@@ -23,38 +20,28 @@
 #include <QStyle>
 
 #include <QTextEdit>
-
-class QScrollArea;
-class HomeLayerUI;
-
 namespace LinkedOut {
 
-	class MainLayer;
-
-	class HomeLayer : public  NavPanel{
+	class NetworkPanel : public NavPanel {
 	public:
-		HomeLayer(QWidget* parent);
-		~HomeLayer();
+		NetworkPanel(QWidget* parent);
+
+		~NetworkPanel();
 
 		void Show() override;
 
 		void Hide() override;
 
-		/*void AddPost(Ref<Post> post) { 
-			m_PostsLayout->AddPost(post);
-		}
-		void ClearPosts() {
-			m_PostsLayout->ClearPosts();
-		}
-
-		void ShowMore(uint32_t amount) {
-			m_PostsLayout->ShowMore(amount);
-		}*/
-		void SetContext(Ref<Account> person);
+		void SetContext(Ref<Account> context);
 		void Clear()override;
+
+	private:
+
 	private:
 		QVBoxLayout* m_MainLayout;
-		HomeLayerUI* m_HomeLayerUI = nullptr;
+		NetworkPanelUI* m_NetworkPanelUI = nullptr;
 		Ref<Account> m_Account;
 	};
+
+
 }

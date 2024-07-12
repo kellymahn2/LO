@@ -1,191 +1,423 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="E:/LO/LO/Database/LinkedOutUserData.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="pragmas query structure browser" current="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2440"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,15:mainsqlite_sequence"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="ATTACHMENT" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="123"/><column index="2" value="84"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Account" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths/><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="CONTENT" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths/><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="USER" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort><column index="7" mode="1"/></sort><column_widths><column index="1" value="76"/><column index="2" value="287"/><column index="3" value="79"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="sqlite_sequence" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="52"/><column index="2" value="40"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">CREATE TABLE USER(
-USER_ID SERIAL PRIMARY KEY,
-USERNAME VARCHAR(50),
-PASSWORD_HASH VARCHAR(255),
-PASSWORD_SALT VARCHAR(255),
-CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-FIRSTNAME VARCHAR(255),
-LASTNAME VARCHAR(255),
-BIRTHDATE VARCHAR(255),
-PLACEOFSTUDY VARCHAR(255)
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="E:/LO/LO/Database/LinkedOutUserData.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="pragmas query structure browser" current="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2440"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,7:mainAccount"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="ATTACHMENT" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="123"/><column index="2" value="84"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Account" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="88"/><column index="2" value="114"/><column index="3" value="89"/><column index="4" value="80"/><column index="5" value="114"/><column index="6" value="300"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="CONTENT" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths/><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Comment" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="95"/><column index="2" value="65"/><column index="3" value="81"/><column index="4" value="129"/><column index="5" value="103"/><column index="6" value="177"/><column index="7" value="179"/><column index="8" value="133"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Company" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="88"/><column index="2" value="118"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="CompanyEmployees" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="94"/><column index="2" value="98"/><column index="3" value="56"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="CompanyJobRequest" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="56"/><column index="2" value="101"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="CompanyJobs" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="94"/><column index="2" value="148"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="DirectMessage" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="93"/><column index="2" value="81"/><column index="3" value="82"/><column index="4" value="269"/><column index="5" value="265"/><column index="6" value="308"/><column index="7" value="90"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="FollowRequest" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="101"/><column index="2" value="81"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Following" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="88"/><column index="2" value="93"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Job" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="56"/><column index="2" value="57"/><column index="3" value="113"/><column index="4" value="118"/><column index="5" value="125"/><column index="6" value="87"/><column index="7" value="75"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Like" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="57"/><column index="2" value="65"/><column index="3" value="70"/><column index="4" value="129"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Person" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="88"/><column index="2" value="87"/><column index="3" value="84"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="PersonSkills" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="81"/><column index="2" value="70"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Post" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="65"/><column index="2" value="81"/><column index="3" value="129"/><column index="4" value="103"/><column index="5" value="441"/><column index="6" value="119"/><column index="7" value="103"/><column index="8" value="189"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Repost" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="65"/><column index="2" value="88"/><column index="3" value="129"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="USER" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort><column index="7" mode="1"/></sort><column_widths><column index="1" value="76"/><column index="2" value="287"/><column index="3" value="79"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="sqlite_sequence" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="52"/><column index="2" value="40"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 4">CREATE TABLE Account (
+    account_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    phone_number TEXT,
+	user_name TEXT,
+	password TEXT,
+    email TEXT,
+	image_path TEXT
 );
 
-CREATE TABLE POST(
-POST_ID SERIAL PRIMARY KEY,
-USER_ID INT NOT NULL,
-PARENT_ID INT,
-POST_DEPTH INTEGER,
-CONTENT TEXT(1024),
-CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-FOREIGN KEY (USER_ID) REFERENCES USER(USER_ID),
-FOREIGN KEY (PARENT_ID) REFERENCES POST(POST_ID)
+CREATE TABLE Following(
+	follower_id INTEGER,
+	following_id INTEGER,
+	FOREIGN KEY (follower_id) REFERENCES ACCOUNT(account_id) ON DELETE CASCADE,
+	FOREIGN KEY (following_id) REFERENCES ACCOUNT(account_id) ON DELETE CASCADE
 );
 
-CREATE TABLE ATTACHMENT(
-ATTACHMENT_ID SERIAL PRIMARY KEY,
-FILE_PATH VARCHAR(255) NOT NULL
+
+CREATE TABLE Post(
+    post_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sender_id INTEGER,
+    time_sent TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    content_text TEXT,
+    content_picture TEXT,
+    content_video TEXT,
+    poster_name TEXT,
+    repost_counter INTEGER,
+    FOREIGN KEY (sender_id) REFERENCES Account(account_id) ON DELETE CASCADE
 );
 
-CREATE TABLE POST_ATTACHMENT(
-POST_ATTACHMENT_ID SERIAL PRIMARY KEY,
-POST_ID INT NOT NULL,
-ATTACHMENT_ID INT NOT NULL,
-FOREIGN KEY (ATTACHMENT_ID) REFERENCES ATTACHMENT(ATTACHMENT_ID),
-FOREIGN KEY (POST_ID) REFERENCES POST(POST_ID)
+CREATE TABLE Like (
+    like_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    post_id INTEGER,
+    liked_by INTEGER,
+    liked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (liked_by) REFERENCES Account(account_id) ON DELETE CASCADE,
+    FOREIGN KEY (post_id) REFERENCES Post(post_id) ON DELETE CASCADE
 );
 
-CREATE TABLE DIRECT_MESSAGE(
-MESSAGE_ID SERIAL PRIMARY KEY,
-SENDER_ID INT NOT NULL,
-RECEIVER_ID INT NOT NULL,
-CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-FOREIGN KEY (SENDER_ID) REFERENCES USER(USER_ID),
-FOREIGN KEY (RECEIVER_ID) REFERENCES USER(USER_ID)
+CREATE TABLE Comment (	
+
+    comment_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    post_id INTEGER,
+    sender_id INTEGER,
+    time_sent TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    content_text TEXT,
+    content_picture TEXT,
+    content_video TEXT,
+    commenter_name TEXT,
+    FOREIGN KEY (sender_id) REFERENCES Account(account_id) ON DELETE CASCADE,
+    FOREIGN KEY (post_id) REFERENCES Post(post_id) ON DELETE CASCADE
 );
-CREATE TABLE DIRECT_MESSAGE_ATTACHMENT(
-DIRECT_MESSAGE_ATTACHMENT_ID SERIAL PRIMARY KEY,
-MESSAGE_ID INT NOT NULL,
-ATTACHMENT_ID INT NOT NULL,
-FOREIGN KEY (ATTACHMENT_ID) REFERENCES ATTACHMENT(ATTACHMENT_ID),
-FOREIGN KEY (MESSAGE_ID) REFERENCES DIRECT_MESSAGE(MESSAGE_ID)
-);</sql><sql name="SQL 4">CREATE TABLE Account (
-    account_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    phone_number TEXT,
-	user_name TEXT,
-	password TEXT,
-    email TEXT,
-	image_path TEXT
-);
+
+CREATE TABLE DirectMessage (
+    message_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sender_id INTEGER,
+    time_sent TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    content_text TEXT,
+    content_picture TEXT,
+    content_video TEXT,
+    to_who TEXT,
+    FOREIGN KEY (sender_id) REFERENCES Account(account_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Job (
+    job_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    salary INTEGER,
+    job_name TEXT,
+    company_name TEXT,
+    workspace_type INTEGER,
+    location TEXT,
+    job_type INTEGER
+);
+
+CREATE TABLE JobSkills (
+    job_id INTEGER,
+    skill_tag TEXT,
+    FOREIGN KEY (job_id) REFERENCES Job(job_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Person (
+    account_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name TEXT,
+    last_name TEXT,
+    FOREIGN KEY (account_id) REFERENCES Account(account_id) ON DELETE CASCADE
+);
+
+CREATE TABLE PersonSkills (
+    person_id INTEGER,
+    skill_tag TEXT,
+    FOREIGN KEY (person_id) REFERENCES Person(account_id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE PersonFollowRequest(
+	requester_id INTEGER,
+	person_id INTEGER,
+	FOREIGN KEY (requester_id) REFERENCES Person(account_id) ON DELETE CASCADE,
+	FOREIGN KEY (person_id) REFERENCES Person(account_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Company (
+    account_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    company_name TEXT,
+    FOREIGN KEY (account_id) REFERENCES Account(account_id) ON DELETE CASCADE
+);
+
+CREATE TABLE CompanyJobs (
+    company_id INTEGER,
+    job_id INTEGER,
+    FOREIGN KEY (company_id) REFERENCES Company(account_id) ON DELETE CASCADE,
+    FOREIGN KEY (job_id) REFERENCES Job(job_id) ON DELETE CASCADE
+);
+
+CREATE TABLE CompanyEmployees (
+    company_id INTEGER,
+    employee_id INTEGER,
+    FOREIGN KEY (company_id) REFERENCES Company(account_id) ON DELETE CASCADE,
+    FOREIGN KEY (employee_id) REFERENCES Person(account_id) ON DELETE CASCADE
+);
+</sql><sql name="SQL 4">
+
+
+
+
+
+DROP TABLE IF EXISTS Like;
+DROP TABLE IF EXISTS Comment;
+DROP TABLE IF EXISTS DirectMessage;
+DROP TABLE IF EXISTS Post;
+DROP TABLE IF EXISTS PersonSkills;
+DROP TABLE IF EXISTS JobSkills;
+DROP TABLE IF EXISTS CompanyEmployees;
+DROP TABLE IF EXISTS CompanyJobs;
+DROP TABLE IF EXISTS Job;
+DROP TABLE IF EXISTS Company;
+DROP TABLE IF EXISTS PersonFollowRequest;
+DROP TABLE IF EXISTS Person;
+DROP TABLE IF EXISTS Following;
+DROP TABLE IF EXISTS Account;
+
+
+</sql><sql name="SQL 6">-- Populate the tables with sample data
+INSERT INTO Account (phone_number, user_name, password, email, image_path) VALUES 
+('123-456-7890', 'john_doe', 'password123', 'john_doe@example.com', 'path/to/john_image.jpg'),
+('234-567-8901', 'jane_smith', 'password456', 'jane_smith@example.com', 'path/to/jane_image.jpg'),
+('345-678-9012', 'alice_jones', 'password789', 'alice_jones@example.com', 'path/to/alice_image.jpg');
+
+INSERT INTO Following (follower_id, following_id) VALUES 
+(1, 2),
+(2, 1),
+(1, 3);
+
+INSERT INTO Post (sender_id, content_text, content_picture, content_video, poster_name, repost_counter) VALUES 
+(1, 'Hello World!', 'path/to/image1.jpg', 'path/to/video1.mp4', 'john_doe', 0),
+(2, 'Another post', 'path/to/image2.jpg', 'path/to/video2.mp4', 'jane_smith', 0),
+(3, 'Yet another post', 'path/to/image3.jpg', 'path/to/video3.mp4', 'alice_jones', 0);
+
+INSERT INTO &quot;Like&quot; (post_id, liked_by) VALUES 
+(1, 2),
+(1, 3),
+(2, 1);
+
+INSERT INTO Comment (post_id, sender_id, content_text, content_picture, content_video, commenter_name) VALUES 
+(1, 2, 'Nice post!', 'path/to/comment_image1.jpg', 'path/to/comment_video1.mp4', 'jane_smith'),
+(1, 3, 'Great post!', 'path/to/comment_image2.jpg', 'path/to/comment_video2.mp4', 'alice_jones'),
+(2, 1, 'Thank you!', 'path/to/comment_image3.jpg', 'path/to/comment_video3.mp4', 'john_doe');
+
+INSERT INTO DirectMessage (sender_id, content_text, content_picture, content_video, to_who) VALUES 
+(1, 'Hey, how are you?', 'path/to/message_image1.jpg', 'path/to/message_video1.mp4', 'jane_smith'),
+(2, 'I am good, thanks!', 'path/to/message_image2.jpg', 'path/to/message_video2.mp4', 'john_doe'),
+(3, 'Hello everyone!', 'path/to/message_image3.jpg', 'path/to/message_video3.mp4', 'john_doe');
+
+INSERT INTO Job (salary, job_name, company_name, workspace_type, location, job_type) VALUES 
+(50000, 'Software Engineer', 'Tech Corp', 1, 'New York', 1),
+(60000, 'Data Scientist', 'Data Inc', 1, 'San Francisco', 1),
+(70000, 'Product Manager', 'Products LLC', 1, 'Boston', 1);
+
+INSERT INTO JobSkills (job_id, skill_tag) VALUES 
+(1, 'Python'),
+(1, 'Backend'),
+(2, 'DataScience'),
+(2, 'MachineLearning'),
+(3, 'ProjectManagement');
+
+INSERT INTO Person (first_name, last_name) VALUES 
+('John', 'Doe'),
+('Jane', 'Smith'),
+('Alice', 'Jones');
+
+INSERT INTO PersonSkills (person_id, skill_tag) VALUES 
+(1, 'Python'),
+(1, 'Backend'),
+(2, 'ProjectManagement'),
+(3, 'UI'),
+(3, 'UX');
+
+INSERT INTO PersonFollowRequest (requester_id, person_id) VALUES 
+(1, 2),
+(2, 3),
+(3, 1);
+
+INSERT INTO Company (company_name) VALUES 
+('Tech Corp'),
+('Data Inc'),
+('Products LLC');
+
+INSERT INTO CompanyJobs (company_id, job_id) VALUES 
+(1, 1),
+(2, 2),
+(3, 3);
+
+INSERT INTO CompanyEmployees (company_id, employee_id) VALUES 
+(1, 1),
+(2, 2),
+(3, 3);
+</sql><sql name="SQL 8">
+
+
+
+
+
+DROP TABLE IF EXISTS Like;
+DROP TABLE IF EXISTS Comment;
+DROP TABLE IF EXISTS DirectMessage;
+DROP TABLE IF EXISTS Repost;
+DROP TABLE IF EXISTS Post;
+DROP TABLE IF EXISTS PersonSkills;
+DROP TABLE IF EXISTS JobSkills;
+DROP TABLE IF EXISTS CompanyEmployees;
+DROP TABLE IF EXISTS CompanyJobs;
+DROP TABLE IF EXISTS Job;
+DROP TABLE IF EXISTS CompanyJobRequest;
+DROP TABLE IF EXISTS Company;
+DROP TABLE IF EXISTS FollowRequest;
+DROP TABLE IF EXISTS Person;
+DROP TABLE IF EXISTS Following;
+DROP TABLE IF EXISTS Account;
+
+CREATE TABLE Account (
+    account_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    phone_number TEXT,
+	user_name TEXT,
+	password TEXT,
+    email TEXT,
+	image_path TEXT
+);
+
+CREATE TABLE Following(
+	follower_id INTEGER,
+	following_id INTEGER,
+	FOREIGN KEY (follower_id) REFERENCES ACCOUNT(account_id) ON DELETE CASCADE,
+	FOREIGN KEY (following_id) REFERENCES ACCOUNT(account_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Post(
+    post_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sender_id INTEGER,
+    time_sent TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    content_text TEXT,
+    content_picture TEXT,
+    content_video TEXT,
+    poster_name TEXT,
+    repost_counter INTEGER,
+    FOREIGN KEY (sender_id) REFERENCES Account(account_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Repost(
+	post_id INTEGER,
+	account_id INTEGER,
+	repost_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (post_id) REFERENCES Post(post_id) ON DELETE CASCADE,
+	FOREIGN KEY (account_id) REFERENCES Account(account_id) ON DELETE CASCADE
+);
+	
+
+
+CREATE TABLE Like (
+    like_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    post_id INTEGER,
+    liked_by INTEGER,
+    liked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (liked_by) REFERENCES Account(account_id) ON DELETE CASCADE,
+    FOREIGN KEY (post_id) REFERENCES Post(post_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Comment (	
+	comment_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    post_id INTEGER,
+    sender_id INTEGER,
+    time_sent TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    content_text TEXT,
+    content_picture TEXT,
+    content_video TEXT,
+    commenter_name TEXT,
+    FOREIGN KEY (sender_id) REFERENCES Account(account_id) ON DELETE CASCADE,
+    FOREIGN KEY (post_id) REFERENCES Post(post_id) ON DELETE CASCADE
+);
+
+CREATE TABLE DirectMessage (
+    message_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sender_id INTEGER,
+    time_sent TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    content_text TEXT,
+    content_picture TEXT,
+    content_video TEXT,
+    receiver_id INTEGER,
+    FOREIGN KEY (sender_id) REFERENCES Person(account_id) ON DELETE CASCADE,
+	FOREIGN KEY (receiver_id) REFERENCES Person(account_id) ON DELETE CASCADE
+);
+-- 
+-- CREATE TABLE Job (
+--     job_id INTEGER PRIMARY KEY AUTOINCREMENT,
+--     salary INTEGER,
+--     job_name TEXT,
+--     company_name TEXT,
+--     workspace_type INTEGER,
+--     location TEXT,
+--     job_type INTEGER
+-- );
+
+
+
+CREATE TABLE Person (
+    account_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name TEXT,
+    last_name TEXT,
+    FOREIGN KEY (account_id) REFERENCES Account(account_id) ON DELETE CASCADE
+);
+
+CREATE TABLE PersonSkills (
+    person_id INTEGER,
+    skill_tag TEXT,
+    FOREIGN KEY (person_id) REFERENCES Person(account_id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE FollowRequest(
+	requester_id INTEGER,
+	person_id INTEGER,
+	FOREIGN KEY (requester_id) REFERENCES Person(account_id) ON DELETE CASCADE,
+	FOREIGN KEY (person_id) REFERENCES Person(account_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Company (
+    account_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    company_name TEXT,
+    FOREIGN KEY (account_id) REFERENCES Account(account_id) ON DELETE CASCADE
+);
+
+CREATE TABLE CompanyJobs (
+	job_id INTEGER PRIMARY KEY AUTOINCREMENT,
+	company_id INTEGER,
+    salary INTEGER,
+    job_name TEXT,
+    company_name TEXT,
+    workspace_type INTEGER,
+    location TEXT,
+    job_type INTEGER,
+	taken INTEGER DEFAULT 0,
+    FOREIGN KEY (company_id) REFERENCES Company(account_id) ON DELETE CASCADE
+);
+
+CREATE TABLE JobSkills (
+    job_id INTEGER,
+    skill_tag TEXT,
+    FOREIGN KEY (job_id) REFERENCES CompanyJobs(job_id) ON DELETE CASCADE
+);
+
+CREATE TABLE CompanyJobRequest (
+	job_id INTEGER,
+	requester_id INTEGER,
+    FOREIGN KEY (job_id) REFERENCES CompanyJobs(job_id) ON DELETE CASCADE,
+	FOREIGN KEY (requester_id) REFERENCES Person(account_id) ON DELETE CASCADE
+);
+
+CREATE TABLE CompanyEmployees (
+    company_id INTEGER,
+    employee_id INTEGER,
+	job_id INTEGER,
+    FOREIGN KEY (company_id) REFERENCES Company(account_id) ON DELETE CASCADE,
+    FOREIGN KEY (employee_id) REFERENCES Person(account_id) ON DELETE CASCADE,
+	FOREIGN KEY (job_id) REFERENCES CompanyJobs(job_id) ON DELETE CASCADE
+);
+
+
+-- Select statements to view the data in each table
+SELECT * FROM Account;
+SELECT * FROM Following;
+SELECT * FROM Post;
+SELECT * FROM Like;
+SELECT * FROM Comment;
+SELECT * FROM DirectMessage;
+SELECT * FROM JobSkills;
+SELECT * FROM Person;
+SELECT * FROM PersonSkills;
+SELECT * FROM FollowRequest;
+SELECT * FROM Company;
+SELECT * FROM CompanyJobs;
+SELECT * FROM CompanyEmployees;
+</sql><sql name="SQL 7">-- Insert into Account table for Person Kelly
+INSERT INTO Account (phone_number, user_name, password, email, image_path)
+VALUES ('', 'kelly', '1384', '', '');
 
-CREATE TABLE Following(
-	follower_id INTEGER,
-	following_id INTEGER,
-	FOREIGN KEY (follower_id) REFERENCES ACCOUNT(account_id) ON DELETE CASCADE,
-	FOREIGN KEY (following_id) REFERENCES ACCOUNT(account_id) ON DELETE CASCADE
-);
+-- Get the account_id of the newly inserted Person Kelly
+INSERT INTO Person (account_id, first_name, last_name)
+VALUES ((SELECT last_insert_rowid()), '', '');
 
+-- Insert into Account table for Company Kaidel
+INSERT INTO Account (phone_number, user_name, password, email, image_path)
+VALUES ('', 'kaidel', '1384', '', '');
 
-CREATE TABLE Post(
-    post_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    sender_id INTEGER,
-    time_sent TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    content_text TEXT,
-    content_picture TEXT,
-    content_video TEXT,
-    poster_name TEXT,
-    repost_counter INTEGER,
-    FOREIGN KEY (sender_id) REFERENCES Account(account_id) ON DELETE CASCADE
-);
+-- Get the account_id of the newly inserted Company Kaidel
+INSERT INTO Company (account_id, company_name)
+VALUES ((SELECT last_insert_rowid()), '');
 
-CREATE TABLE Like (
-    like_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    post_id INTEGER,
-    liked_by INTEGER,
-    liked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (liked_by) REFERENCES Account(account_id) ON DELETE CASCADE,
-    FOREIGN KEY (post_id) REFERENCES Post(post_id) ON DELETE CASCADE
-);
+-- Insert into Account table for Person Kyle
+INSERT INTO Account (phone_number, user_name, password, email, image_path)
+VALUES ('', 'kyle', '1384', '', '');
 
-CREATE TABLE Comment (
-    comment_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    post_id INTEGER,
-    sender_id INTEGER,
-    time_sent TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    content_text TEXT,
-    content_picture TEXT,
-    content_video TEXT,
-    commenter_name TEXT,
-    FOREIGN KEY (sender_id) REFERENCES Account(account_id) ON DELETE CASCADE,
-    FOREIGN KEY (post_id) REFERENCES Post(post_id) ON DELETE CASCADE
-);
-
-CREATE TABLE DirectMessage (
-    message_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    sender_id INTEGER,
-    time_sent TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    content_text TEXT,
-    content_picture TEXT,
-    content_video TEXT,
-    to_who TEXT,
-    FOREIGN KEY (sender_id) REFERENCES Account(account_id) ON DELETE CASCADE
-);
-
-CREATE TABLE Job (
-    job_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    salary INTEGER,
-    job_name TEXT,
-    company_name TEXT,
-    workspace_type INTEGER,
-    location TEXT,
-    job_type INTEGER
-);
-
-CREATE TABLE JobSkills (
-    job_id INTEGER,
-    skill_tag TEXT,
-    FOREIGN KEY (job_id) REFERENCES Job(job_id) ON DELETE CASCADE
-);
-
-CREATE TABLE Person (
-    account_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    first_name TEXT,
-    last_name TEXT,
-    FOREIGN KEY (account_id) REFERENCES Account(account_id) ON DELETE CASCADE
-);
-
-CREATE TABLE PersonSkills (
-    person_id INTEGER,
-    skill_tag TEXT,
-    FOREIGN KEY (person_id) REFERENCES Person(account_id) ON DELETE CASCADE
-);
-
-
-CREATE TABLE PersonFollowRequest(
-	requester_id INTEGER,
-	person_id INTEGER,
-	FOREIGN KEY (requester_id) REFERENCES Person(account_id) ON DELETE CASCADE,
-	FOREIGN KEY (person_id) REFERENCES Person(account_id) ON DELETE CASCADE
-);
-
-CREATE TABLE Company (
-    account_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    company_name TEXT,
-    FOREIGN KEY (account_id) REFERENCES Account(account_id) ON DELETE CASCADE
-);
-
-CREATE TABLE CompanyJobs (
-    company_id INTEGER,
-    job_id INTEGER,
-    FOREIGN KEY (company_id) REFERENCES Company(account_id) ON DELETE CASCADE,
-    FOREIGN KEY (job_id) REFERENCES Job(job_id) ON DELETE CASCADE
-);
-
-CREATE TABLE CompanyEmployees (
-    company_id INTEGER,
-    employee_id INTEGER,
-    FOREIGN KEY (company_id) REFERENCES Company(account_id) ON DELETE CASCADE,
-    FOREIGN KEY (employee_id) REFERENCES Person(account_id) ON DELETE CASCADE
-);
-</sql><sql name="SQL 4">
-
-
-
-
-
-DROP TABLE IF EXISTS Like;
-DROP TABLE IF EXISTS Comment;
-DROP TABLE IF EXISTS DirectMessage;
-DROP TABLE IF EXISTS Post;
-DROP TABLE IF EXISTS PersonSkills;
-DROP TABLE IF EXISTS JobSkills;
-DROP TABLE IF EXISTS CompanyEmployees;
-DROP TABLE IF EXISTS CompanyJobs;
-DROP TABLE IF EXISTS Job;
-DROP TABLE IF EXISTS Company;
-DROP TABLE IF EXISTS PersonFollowRequest;
-DROP TABLE IF EXISTS Person;
-DROP TABLE IF EXISTS Following;
-DROP TABLE IF EXISTS Account;
-
-
-</sql><sql name="SQL 5"></sql><current_tab id="1"/></tab_sql></sqlb_project>
+-- Get the account_id of the newly inserted Person Kyle
+INSERT INTO Person (account_id, first_name, last_name)
+VALUES ((SELECT last_insert_rowid()), '', '');
+INSERT INTO Following VALUES (1,3);</sql><current_tab id="3"/></tab_sql></sqlb_project>

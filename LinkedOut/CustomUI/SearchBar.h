@@ -4,12 +4,13 @@
 #include <QDebug>
 #include <QHBoxLayout>
 #include <QLineEdit>
+#include <functional>
 
 class SearchBar : public QWidget
 {
     Q_OBJECT
 public:
-    SearchBar(QWidget* parent = nullptr) : QWidget(parent)
+    SearchBar(std::function<void(const QString& text)>&& callback, QWidget* parent = nullptr) : QWidget(parent)
     {
         QHBoxLayout* layout = new QHBoxLayout(this);
 
@@ -23,14 +24,20 @@ public:
 
         QObject::connect(lineEdit, &QLineEdit::textChanged, this, [=](const QString& text) {
             iconLabel->setVisible(text.isEmpty());
-            });
+            callback(text);
+        });
 
         layout->addWidget(iconLabel);
         layout->addWidget(lineEdit);
 
         layout->setContentsMargins(0, 0, 0, 0);
         layout->setSpacing(5);
-
+        m_LineEdit = lineEdit;
         setLayout(layout);
     }
+    void SetText(const std::string& text) {
+        m_LineEdit->setText(QString::fromStdString(text));
+    }
+private:
+    QLineEdit* m_LineEdit;
 };

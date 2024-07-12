@@ -43,7 +43,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>5.12.12_msvc2017_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;widgets;sql</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -71,12 +71,20 @@
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <PreprocessorDefinitions>$(Qt_DEFINES_);%(PreprocessorDefinitions)_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>C:\Qt\5.12.12\msvc2017_64\lib\Qt5Multimediad.lib;C:\Qt\5.12.12\msvc2017_64\lib\Qt5MultimediaWidgetsd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <PreprocessorDefinitions>_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)LinkedOut;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>C:\Qt\5.12.12\msvc2017_64\lib\Qt5Multimedia.lib;C:\Qt\5.12.12\msvc2017_64\lib\Qt5MultimediaWidgets.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
@@ -106,6 +114,7 @@
     <QtRcc Include="LinkedOut.qrc" />
     <QtUic Include="LinkedOut.ui" />
     <ClCompile Include="Core\Application.cpp" />
+    <ClCompile Include="Core\Company.cpp" />
     <ClCompile Include="Core\DatabaseManager.cpp" />
     <ClCompile Include="Core\Job.cpp" />
     <ClCompile Include="Core\PasswordUtils.cpp" />
@@ -115,19 +124,20 @@
     <ClCompile Include="Layers\CommentUI.cpp" />
     <ClCompile Include="Layers\ErrorLayer.cpp" />
     <ClCompile Include="Layers\HomeLayer.cpp" />
-    <ClCompile Include="Layers\JobsCompany.cpp" />
-    <ClCompile Include="Layers\JobsUser.cpp" />
+    <ClCompile Include="Layers\JobPanel.cpp" />
     <ClCompile Include="Layers\LoginLayer.cpp" />
     <ClCompile Include="Layers\MainLayer.cpp" />
+    <ClCompile Include="Layers\MessagePanel.cpp" />
     <ClCompile Include="Layers\NavigationMenu.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
     </ClCompile>
-    <ClCompile Include="Layers\NetworkCompany.cpp" />
-    <ClCompile Include="Layers\NetworkUser.cpp" />
+    <ClCompile Include="Layers\NetworkPanel.cpp" />
+    <ClCompile Include="Layers\OtherProfilePanel.cpp" />
     <ClCompile Include="Layers\PostUI.cpp" />
+    <ClCompile Include="Layers\ProfilePanel.cpp" />
     <ClCompile Include="Layers\SignupLayer.cpp" />
     <ClCompile Include="Layers\SplashLayer.cpp" />
     <ClCompile Include="Layers\UserInformationLayer.cpp" />
@@ -157,20 +167,30 @@
     <ClInclude Include="Core\Skill.h" />
     <ClInclude Include="Core\Time.h" />
     <QtMoc Include="Layers\PostUI.h" />
+    <QtMoc Include="CustomUI\HomeLayerUI.h" />
+    <QtMoc Include="CustomUI\ComboboxList.h" />
+    <QtMoc Include="CustomUI\JobPanelUI.h" />
+    <QtMoc Include="CustomUI\NetworkPanelUI.h" />
+    <QtMoc Include="CustomUI\MessagingPanelUI.h" />
+    <QtMoc Include="CustomUI\LoginUI.h" />
     <ClInclude Include="CustomUI\Separator.h" />
     <ClInclude Include="Core\Window.h" />
     <QtMoc Include="CustomUI\SearchBar.h" />
     <QtMoc Include="CustomUI\TitledButton.h" />
     <ClInclude Include="CustomUI\Division.h" />
-    <QtMoc Include="Layers\HomeLayer.h" />
+    <QtMoc Include="CustomUI\ProfilePanelUI.h" />
+    <QtMoc Include="CustomUI\SignupUI.h" />
+    <ClInclude Include="Layers\DirectMessagePanel.h" />
+    <ClInclude Include="Layers\HomeLayer.h" />
     <QtMoc Include="CustomUI\TreeNode.h" />
     <ClInclude Include="Layers\CommentUI.h" />
-    <QtMoc Include="Layers\NetworkCompany.h" />
-    <ClInclude Include="Layers\JobsCompany.h" />
-    <ClInclude Include="Layers\JobsUser.h" />
-    <ClInclude Include="Layers\Network.h" />
-    <QtMoc Include="Layers\NetworkUser.h" />
+    <ClInclude Include="Layers\JobPanel.h" />
+    <ClInclude Include="Layers\MessagePanel.h" />
+    <ClInclude Include="Layers\NetworkPanel.h" />
     <ClInclude Include="Layers\NavigationMenu.h" />
+    <QtMoc Include="Layers\NavPanel.h" />
+    <ClInclude Include="Layers\OtherProfilePanel.h" />
+    <ClInclude Include="Layers\ProfilePanel.h" />
     <ClInclude Include="Layers\UserInformationLayer.h" />
     <QtMoc Include="CustomUI\PopupWindow.h" />
     <ClInclude Include="CustomUI\UnitLengthInput.h" />

@@ -242,10 +242,10 @@ namespace LinkedOut {
 	}
 	void UserInformationLayer::SetupUserInformationEvents()
 	{
-		QObject::connect(m_SaveButton, &QPushButton::clicked, [this]() {
+		/*QObject::connect(m_SaveButton, &QPushButton::clicked, [this]() {
 			m_UserData = GetUserInfoFromFields();
 			m_MainLayer->StoreUserInformation(m_UserData);
-			});
+			});*/
 	}
 	void UserInformationLayer::ValidateInput()
 	{

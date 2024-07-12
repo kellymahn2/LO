@@ -1,5 +1,6 @@
 #pragma once
 #include "Core/Layer.h"
+#include "Core/Account.h"
 class QVBoxLayout;
 class ClickableLabel;
 class QString;
@@ -37,6 +38,10 @@ namespace LinkedOut {
 		UserInternalData SignupLayer::GetUserDataFromSignupForm();
 	private:
 		MainLayer* m_MainLayer = nullptr;
+		QWidget* m_MainWidget = nullptr;
+
+		SignupLayerUI* m_LayerUI = nullptr;
+
 		QFrame* m_MainFrame = nullptr;
 		QFrame* m_Frame = nullptr;
 		QFrame* m_UsernameFrame = nullptr;

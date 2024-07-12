@@ -101,6 +101,8 @@ namespace LinkedOut {
 
         void Serialize(QWidget* parent);
 
+        auto& GetID()const { return m_ID; }
+        void SetID(const std::string& id) { m_ID = id; }
 
     private:
 
@@ -112,6 +114,7 @@ namespace LinkedOut {
 		WorkspaceType m_WorkspaceType;
 		std::string m_Location;
 		JobType m_JobType;
+        std::string m_ID;
 	};
 
 }

@@ -48,7 +48,7 @@ namespace LinkedOut {
 		QLabel* m_TimestampLabel = new QLabel("Timestamp", parent);
 		Separator* m_TopSeparator = new Separator(parent);
 
-		HDivision* m_ContentDiv = new HDivision(parent);
+		VDivision* m_ContentDiv = new VDivision(parent);
 		ClickableLabel* m_ContentLabel = new ClickableLabel(parent);
 
 		m_UsernameDiv->Layout->addWidget(m_UsernameLabel);
@@ -77,6 +77,15 @@ namespace LinkedOut {
 				else
 					m_ContentLabel->setText(postText);
 				});
+		}
+
+		if (!GetContentPicture().empty()) {
+			QPixmap image(GetContentPicture().c_str());
+			if (!image.isNull()) {
+				QLabel* imageLabel = new QLabel(m_ContentDiv->Widget);
+				imageLabel->setPixmap(image.scaled(QSize(100,100),Qt::KeepAspectRatioByExpanding,Qt::SmoothTransformation));
+				m_ContentDiv->Layout->addWidget(imageLabel);
+			}
 		}
 
 		m_ContentDiv->Layout->addWidget(m_ContentLabel);

@@ -44,6 +44,7 @@ namespace LinkedOut {
 			return false;
 		QSqlQuery query(QString(), *m_Database);
 		if (!query.exec(QString::fromStdString(statements))) {
+			qDebug(query.lastError().text().toStdString().c_str());
 			throw QueryException(query.lastError().text().toStdString());
 		}
 		return true;
@@ -58,6 +59,8 @@ namespace LinkedOut {
 		QSqlQuery query(QString::fromStdString(statements), *m_Database);
 
 		if (!query.exec()) {
+			qDebug(query.lastError().text().toStdString().c_str());
+			throw QueryException(query.lastError().text().toStdString());
 			return result;
 		}
 

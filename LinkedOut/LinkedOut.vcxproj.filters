@@ -73,18 +73,6 @@
     <ClCompile Include="Layers\CommentUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Layers\NetworkUser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Layers\NetworkCompany.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Layers\JobsUser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Layers\JobsCompany.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Core\Job.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -92,6 +80,24 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Core\Post.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Layers\JobPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Company.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Layers\NetworkPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Layers\MessagePanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Layers\ProfilePanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Layers\OtherProfilePanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -186,13 +192,25 @@
     <ClInclude Include="Layers\CommentUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Layers\Network.h">
+    <ClInclude Include="Layers\HomeLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Layers\JobsUser.h">
+    <ClInclude Include="Layers\DirectMessagePanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Layers\JobsCompany.h">
+    <ClInclude Include="Layers\JobPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Layers\NetworkPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Layers\MessagePanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Layers\ProfilePanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Layers\OtherProfilePanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -209,22 +227,40 @@
     <QtMoc Include="CustomUI\TitledButton.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="Layers\HomeLayer.h">
+    <QtMoc Include="Layers\PostUI.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CustomUI\TreeNode.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CustomUI\HomeLayerUI.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Layers\NavPanel.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CustomUI\NetworkPanelUI.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CustomUI\MessagingPanelUI.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="main.cpp">
       <Filter>Source Files</Filter>
     </QtMoc>
-    <QtMoc Include="Layers\PostUI.h">
+    <QtMoc Include="CustomUI\ComboboxList.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="Layers\NetworkUser.h">
+    <QtMoc Include="CustomUI\JobPanelUI.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="Layers\NetworkCompany.h">
+    <QtMoc Include="CustomUI\LoginUI.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="CustomUI\TreeNode.h">
+    <QtMoc Include="CustomUI\ProfilePanelUI.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CustomUI\SignupUI.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

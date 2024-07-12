@@ -9,6 +9,7 @@ class UnitLengthInput;
 namespace LinkedOut{
 
     class MainLayer;
+    class LoginLayerUI;
     
     class LoginLayer : public Layer{
 	public:
@@ -42,6 +43,13 @@ namespace LinkedOut{
 
 	private:
         MainLayer* m_MainLayer;
+
+        QWidget* m_MainWidget = nullptr;
+
+        LoginLayerUI* m_LayerUI = nullptr;
+
+
+
         QWidget* m_CentralWidget = nullptr;
         QFrame* m_MainFrame = nullptr;
         QFrame* m_Frame = nullptr;

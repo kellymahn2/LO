@@ -4,6 +4,9 @@
 #include <ostream>
 #include <istream>
 #include <fstream>
+#include <optional>
+
+#include <QFileDialog>
 #include <vendor/fmt/fmt.h>
 
 #define BIT(x) 1<<x
@@ -81,7 +84,18 @@ static void TrimInplace(std::string& str, char delim = ' ') {
     TrimRightInplace(str, delim);
 }
 
+static std::optional<std::string> OpenFileDialog(const std::string& filter = "All Files (*.*)", const std::string& initialPath = "") {
+    QString qInitialPath = QString::fromStdString(initialPath);
+    QString qFilter = QString::fromStdString(filter);
 
+    QString fileName = QFileDialog::getOpenFileName(nullptr, "Open File", qInitialPath, qFilter);
+    if (fileName.isEmpty()) {
+        return std::nullopt;
+    }
+    else {
+        return fileName.toStdString();
+    }
+}
 namespace LinkedOut {
 
 
