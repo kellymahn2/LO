@@ -10,8 +10,8 @@ namespace LinkedOut {
 	{
 		m_NativeWindow = new QMainWindow();
 		m_NativeWindow->setWindowTitle(QString::fromStdString(m_Props.Title));
-		m_NativeWindow->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-		m_NativeWindow->setFixedSize(props.Width, props.Height);
+		//m_NativeWindow->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+		m_NativeWindow->setMinimumSize(props.Width, props.Height);
 		m_NativeWindow->show();
 	}
 	Window::~Window(){
